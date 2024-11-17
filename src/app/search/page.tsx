@@ -18,15 +18,15 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const { q } = await searchParams;
   const products = await getProducts({ query: q });
 
-  if (products.length === 0) {
+  if (products.total === 0) {
     return <NotFound />;
   }
 
   return (
-    <main className='container mx-auto px-4 py-8'>
-      <h1 className='text-3xl font-bold mb-2'>Search Results</h1>
-      <p className='text-gray-600 mb-8'>
-        {products.length} results for &quot;{q}&quot;
+    <main className="container mx-auto px-4 py-8">
+      <h1 className="mb-2 text-3xl font-bold">Search Results</h1>
+      <p className="mb-8 text-gray-600">
+        {products.total} results for &quot;{q}&quot;
       </p>
       <ProductGrid products={products} />
     </main>

@@ -4,6 +4,14 @@ export type SerializedProduct = Omit<Product, 'price'> & {
   price: number;
 };
 
+export type SerializedProductPaginated = {
+  items: SerializedProduct[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+};
+
 export type SerializedOrderItem = Omit<OrderItem, 'price'> & {
   price: number;
   product: {
