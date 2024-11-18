@@ -18,9 +18,9 @@ import {
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { FilterIcon, X } from 'lucide-react';
-import { LoadingSpinner } from './LoadingSpinner';
 import { TableRefreshButton } from './TableRefreshButton';
 import { Input } from './ui/input';
+import { LoadingSpinner } from './LoadingSpinner';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -139,108 +139,108 @@ export function DataTable<TData, TValue>({
         </div>
       </div>
 
-      {isFetching ? (
-        <LoadingSpinner />
-      ) : (
-        <div>
-          <div className="rounded-md border-2">
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <TableHead key={header.id}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(header.column.columnDef.header, header.getContext())}
-                        </TableHead>
-                      );
-                    })}
+      <div>
+        <div className="rounded-md border-2">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody className="h-96">
+              {isFetching ? (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                    <LoadingSpinner centerScreen={false} />
+                  </TableCell>
+                </TableRow>
+              ) : table.getRowModel().rows?.length > 0 ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                    ))}
                   </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel().rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={columns.length} className="h-24 text-center">
-                      No results.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-          <div className="flex items-center justify-center gap-2 py-4">
-            <Button
-              variant="ghost"
-              className="rounded border p-1"
-              onClick={() => table.setPageIndex(0)}
-              disabled={!table.getCanPreviousPage()}
-              type="button"
-            >
-              {'<<'}
-            </Button>
-            <Button
-              variant="ghost"
-              className="rounded border p-1"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              type="button"
-            >
-              {'<'}
-            </Button>
-            <span className="flex items-center gap-1">
-              <div>Page</div>
-              <strong>
-                {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
-              </strong>
-            </span>
-            <Button
-              variant="ghost"
-              className="rounded border p-1"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              type="button"
-            >
-              {'>'}
-            </Button>
-            <Button
-              variant="ghost"
-              className="rounded border p-1"
-              onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-              disabled={!table.getCanNextPage()}
-              type="button"
-            >
-              {'>>'}
-            </Button>
-
-            <Select
-              defaultValue={table.getState().pagination.pageSize.toString()}
-              onValueChange={(val) => table.setPageSize(Number(val))}
-            >
-              <SelectTrigger className="w-[100px]">
-                <SelectValue placeholder="Page Size" />
-              </SelectTrigger>
-              <SelectContent>
-                {[10, 20, 30, 40].map((pageSize, idx) => (
-                  <SelectItem key={`table-key-${idx}`} value={pageSize.toString()}>
-                    Show {pageSize}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={columns.length} className="h-24 text-center">
+                    No results.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </div>
-      )}
+        <div className="flex items-center justify-center gap-2 py-4">
+          <Button
+            variant="ghost"
+            className="rounded border p-1"
+            onClick={() => table.setPageIndex(0)}
+            disabled={!table.getCanPreviousPage()}
+            type="button"
+          >
+            {'<<'}
+          </Button>
+          <Button
+            variant="ghost"
+            className="rounded border p-1"
+            onClick={() => table.previousPage()}
+            disabled={!table.getCanPreviousPage()}
+            type="button"
+          >
+            {'<'}
+          </Button>
+          <span className="flex items-center gap-1">
+            <div>Page</div>
+            <strong>
+              {table.getState().pagination.pageIndex + 1} of {table.getPageCount()}
+            </strong>
+          </span>
+          <Button
+            variant="ghost"
+            className="rounded border p-1"
+            onClick={() => table.nextPage()}
+            disabled={!table.getCanNextPage()}
+            type="button"
+          >
+            {'>'}
+          </Button>
+          <Button
+            variant="ghost"
+            className="rounded border p-1"
+            onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+            disabled={!table.getCanNextPage()}
+            type="button"
+          >
+            {'>>'}
+          </Button>
+
+          <Select
+            defaultValue={table.getState().pagination.pageSize.toString()}
+            onValueChange={(val) => table.setPageSize(Number(val))}
+          >
+            <SelectTrigger className="w-[100px]">
+              <SelectValue placeholder="Page Size" />
+            </SelectTrigger>
+            <SelectContent>
+              {[10, 20, 30, 40].map((pageSize, idx) => (
+                <SelectItem key={`table-key-${idx}`} value={pageSize.toString()}>
+                  Show {pageSize}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
     </div>
   );
 }

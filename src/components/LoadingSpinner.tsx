@@ -1,11 +1,18 @@
+import { cn } from '@/lib/utils';
 import { LoaderPinwheel } from 'lucide-react';
 
-export const LoadingSpinner = () => {
+type Props = {
+  centerScreen?: boolean;
+};
+
+export const LoadingSpinner = ({ centerScreen = true }: Props) => {
   return (
-    <div>
-      <div className="fixed inset-0 flex items-center justify-center">
-        <LoaderPinwheel className="h-20 w-20 animate-spin text-sky-500" aria-hidden="true" />
-      </div>
+    <div
+      className={cn('flex items-center justify-center', {
+        'fixed inset-0 h-full': centerScreen,
+      })}
+    >
+      <LoaderPinwheel className="h-20 w-20 animate-spin text-sky-500" aria-hidden="true" />
     </div>
   );
 };
