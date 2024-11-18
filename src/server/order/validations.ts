@@ -1,12 +1,10 @@
 import { z, ZodError } from 'zod';
 import { OrderStatus } from '@prisma/client';
 
-const orderStatusSchema = z.enum([
-  OrderStatus.PENDING,
-  OrderStatus.PROCESSING,
-  OrderStatus.COMPLETED,
-  OrderStatus.CANCELLED,
-]);
+const orderStatusSchema = z.object({
+  orderId: z.string(),
+  status: z.enum([OrderStatus.PENDING, OrderStatus.PROCESSING, OrderStatus.COMPLETED, OrderStatus.CANCELLED]),
+});
 
 export const orderSchema = z.object({
   userId: z.string(),
@@ -16,7 +14,7 @@ export const orderSchema = z.object({
       productId: z.string(),
       quantity: z.coerce.number(),
       price: z.coerce.number(),
-    })
+    }),
   ),
 });
 
@@ -34,8 +32,8 @@ export const validateOrderForm = (formData: FormData) => {
   return parsedData;
 };
 
-export const validateOrderStatus = (status: OrderStatus) => {
-  const parsedStatus = orderStatusSchema.safeParse(status);
+export const validateOrderStatus = (data: unknown) => {
+  const parsedStatus = orderStatusSchema.safeParse(data);
 
   if (!parsedStatus.success) {
     throw new ZodError(parsedStatus.error.issues);

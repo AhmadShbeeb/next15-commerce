@@ -1,10 +1,7 @@
-import { getProducts } from '@/server/product/queries';
 import Link from 'next/link';
 import { ProductsTable } from './_components/products-table';
 
-export default async function AdminProductsPage() {
-  const products = await getProducts({ limit: 10, page: 1 });
-
+export default function AdminProductsPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-6 flex items-center justify-between">
@@ -16,7 +13,7 @@ export default async function AdminProductsPage() {
           Add Product
         </Link>
       </div>
-      <ProductsTable products={products} />
+      <ProductsTable />
     </div>
   );
 }

@@ -1,14 +1,14 @@
 'use client';
 
-import { SerializedProduct } from '@/types/serialized-types';
+import { SerializedOrder } from '@/types/serialized-types';
 import { Columns } from './columns';
 import { DataTable } from '@/components/DataTable';
 import { useState } from 'react';
 import { useDebounce } from '@/hooks/common/useDebounce';
-import { useGetPaginatedProducts } from '@/hooks/products/useGetPaginatedProducts';
+import { useGetPaginatedOrders } from '@/hooks/orders/useGetPaginatedOrders';
 import { PaginationState, SortingState } from '@tanstack/react-table';
 
-export function ProductsTable() {
+export function OrdersTable() {
   const [searchQuery, setSearchQuery] = useState('');
   const debouncedSearchTerm = useDebounce(searchQuery, 300);
   const [pagination, setPagination] = useState<PaginationState>({
@@ -16,9 +16,10 @@ export function ProductsTable() {
     pageSize: 10,
   });
   const [sorting, setSorting] = useState<SortingState>([
-    { id: 'name' as keyof SerializedProduct, desc: false }, // set default sorting
+    { id: 'createdAt' as keyof SerializedOrder, desc: true }, // set default sorting
   ]);
-  const { data: products, isFetching, refetch } = useGetPaginatedProducts(debouncedSearchTerm, pagination, sorting);
+
+  const { data: orders, isFetching, refetch } = useGetPaginatedOrders(debouncedSearchTerm, pagination, sorting);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -30,13 +31,13 @@ export function ProductsTable() {
     <div className="overflow-x-auto">
       <DataTable
         columns={Columns}
-        data={products?.items ?? []}
-        total={products?.total ?? 0}
+        data={orders?.items ?? []}
+        total={orders?.total ?? 0}
         isFetching={isFetching}
-        pageCount={products?.totalPages ?? 0}
+        pageCount={orders?.totalPages ?? 0}
         pageIndex={pagination.pageIndex}
         pageSize={pagination.pageSize}
-        searchPlaceholder="Search products..."
+        searchPlaceholder="Search orders..."
         handleSearch={handleSearch}
         searchQuery={searchQuery}
         setPagination={setPagination}

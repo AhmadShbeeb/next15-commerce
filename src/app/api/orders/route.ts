@@ -1,6 +1,6 @@
 import { checkAuthorization } from '@/server/common/check-authorization';
 import { validatePaginationQuery } from '@/server/common/pagination-validation';
-import { getProducts } from '@/server/product/queries';
+import { getOrders } from '@/server/order/queries';
 import { NextRequest, NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     await checkAuthorization();
     const { data: validatedQuery } = validatePaginationQuery(request.nextUrl.searchParams);
 
-    const products = await getProducts({
+    const orders = await getOrders({
       query: validatedQuery.query,
       page: validatedQuery.page,
       limit: validatedQuery.limit,
@@ -17,14 +17,14 @@ export async function GET(request: NextRequest) {
       orderDirection: validatedQuery.orderDirection,
     });
 
-    return NextResponse.json(products);
+    return NextResponse.json(orders);
   } catch (error) {
-    console.error('Products API Error:', error);
+    console.error('Orders API Error:', error);
 
     if (error instanceof ZodError) {
       return NextResponse.json({ error: error.flatten().fieldErrors }, { status: 400 });
     }
 
-    return NextResponse.json({ error: 'Failed to fetch products' }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to fetch orders' }, { status: 500 });
   }
 }

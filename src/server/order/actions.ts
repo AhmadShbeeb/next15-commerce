@@ -3,23 +3,21 @@ import 'server-only';
 
 import { prisma } from '@/lib/prisma';
 import { OrderStatus } from '@prisma/client';
-import { revalidatePath } from 'next/cache';
 import { ZodError } from 'zod';
 import { checkAuthorization } from '../common/check-authorization';
 import { validateOrderForm, validateOrderStatus } from './validations';
 
-export async function updateOrderStatus(orderId: string, status: OrderStatus) {
+export async function updateOrderStatus(prevState: unknown, data: { orderId: string; status: OrderStatus }) {
   try {
     await checkAuthorization();
-    const { data: validatedStatus } = validateOrderStatus(status);
+    const { data: validatedStatus } = validateOrderStatus(data);
 
-    const order = await prisma.order.update({
-      where: { id: orderId },
-      data: { status: validatedStatus },
+    await prisma.order.update({
+      where: { id: data.orderId },
+      data: { status: validatedStatus.status },
     });
 
-    revalidatePath('/admin/orders');
-    return { success: true, data: order };
+    return { success: true };
   } catch (error) {
     console.error('Update order status error:', error);
     if (error instanceof ZodError) {
@@ -40,7 +38,7 @@ export async function createOrder(prevState: unknown, formData: FormData) {
         userId: parsedOrder.userId,
         total: parsedOrder.total,
         items: {
-          create: parsedOrder.items.map(item => ({
+          create: parsedOrder.items.map((item) => ({
             productId: item.productId,
             quantity: item.quantity,
             price: item.price,

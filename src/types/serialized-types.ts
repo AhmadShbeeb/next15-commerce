@@ -24,3 +24,11 @@ export type SerializedOrder = Omit<Order, 'total'> & {
   items: SerializedOrderItem[];
   user: User;
 };
+
+export type SerializedOrderPaginated = {
+  items: SerializedOrder[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+};

@@ -18,3 +18,7 @@ export function cn(...inputs: ClassValue[]) {
 export function convertEnum(val: string) {
   return val.charAt(0).toUpperCase() + val.slice(1).toLowerCase().replace(/_/g, ' ');
 }
+
+export function capitalizeFirstLetter(str: string) {
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}

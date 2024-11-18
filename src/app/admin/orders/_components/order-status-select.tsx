@@ -1,9 +1,13 @@
 'use client';
 
-import { OrderStatus } from '@prisma/client';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { REACT_QUERY_KEYS } from '@/lib/constants';
+import { capitalizeFirstLetter } from '@/lib/utils';
 import { updateOrderStatus } from '@/server/order/actions';
+import { OrderStatus } from '@prisma/client';
+import { useQueryClient } from '@tanstack/react-query';
+import { startTransition, useActionState, useEffect } from 'react';
+import { toast } from 'sonner';
 
 interface OrderStatusSelectProps {
   orderId: string;
@@ -11,36 +15,38 @@ interface OrderStatusSelectProps {
 }
 
 export function OrderStatusSelect({ orderId, initialStatus }: OrderStatusSelectProps) {
-  const router = useRouter();
-  const [status, setStatus] = useState(initialStatus);
+  const queryClient = useQueryClient();
+  const [actionState, updateOrderStatusAction, isPending] = useActionState(updateOrderStatus, null);
 
-  const handleStatusUpdate = async (newStatus: OrderStatus) => {
-    try {
-      const result = await updateOrderStatus(orderId, newStatus);
+  function handleStatusUpdate(status: string) {
+    startTransition(() => {
+      updateOrderStatusAction({ orderId, status: status as OrderStatus });
+    });
+  }
 
-      if (!result.success) {
-        throw new Error(result.error?.error?.[0] || 'Failed to update order status');
-      }
-
-      setStatus(newStatus);
-      router.refresh();
-    } catch (error) {
-      console.error('Error updating order status:', error);
-      alert('Failed to update order status');
+  useEffect(() => {
+    if (actionState?.success) {
+      queryClient.invalidateQueries({ queryKey: [REACT_QUERY_KEYS.PAGINATED_ORDERS] });
+      toast.success('Order status updated successfully');
+    } else if (actionState?.error?.error) {
+      actionState?.error?.error.forEach((error) => {
+        toast.error(error);
+      });
     }
-  };
+  }, [actionState, queryClient]);
 
   return (
-    <select
-      value={status}
-      onChange={e => handleStatusUpdate(e.target.value as OrderStatus)}
-      className='text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50'
-    >
-      {Object.values(OrderStatus).map(status => (
-        <option key={status} value={status}>
-          {status}
-        </option>
-      ))}
-    </select>
+    <Select value={initialStatus} onValueChange={handleStatusUpdate} disabled={isPending}>
+      <SelectTrigger className="w-[120px]">
+        <SelectValue placeholder="Select status" />
+      </SelectTrigger>
+      <SelectContent>
+        {Object.values(OrderStatus).map((status) => (
+          <SelectItem key={status} value={status}>
+            {capitalizeFirstLetter(status)}
+          </SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }

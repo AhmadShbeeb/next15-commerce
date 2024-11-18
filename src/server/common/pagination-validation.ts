@@ -13,7 +13,7 @@ const paginationQuerySchema = z.object({
   orderDirection: z.string().optional(),
 });
 
-export const validateProductQuery = (searchParams: URLSearchParams) => {
+export const validatePaginationQuery = (searchParams: URLSearchParams) => {
   const parsedData = paginationQuerySchema.safeParse({
     query: searchParams.get('query'),
     page: searchParams.get('page'),
