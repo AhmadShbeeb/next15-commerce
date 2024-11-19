@@ -65,6 +65,9 @@ export async function getProducts({
 export async function getProduct(id: string) {
   const product = await prisma.product.findUnique({
     where: { id },
+    include: {
+      category: true,
+    },
   });
 
   const serializedProduct = product

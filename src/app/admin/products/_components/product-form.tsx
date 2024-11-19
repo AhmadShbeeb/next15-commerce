@@ -5,7 +5,8 @@ import { useRouter } from 'next/navigation';
 import { upsertProduct } from '@/server/product/actions';
 import { useActionState } from 'react';
 import { useGetCategories } from '@/hooks/categories/useGetCategories';
-
+import { cn } from '@/lib/utils';
+import { SelectSearchable } from '@/components/select-searchable';
 interface ProductFormProps {
   product?: SerializedProduct;
 }
@@ -20,7 +21,15 @@ export function ProductForm({ product }: ProductFormProps) {
       <input type="hidden" name="id" defaultValue={product?.id} />
       <div>
         <label className="mb-1 block text-sm font-medium">Name</label>
-        <input name="name" type="text" defaultValue={product?.name} className="w-full rounded border p-2" required />
+        <input
+          name="name"
+          type="text"
+          defaultValue={product?.name}
+          className={cn('w-full rounded border p-2', {
+            'border-red-500': formState?.error?.name,
+          })}
+          required
+        />
         {formState?.error?.name && <div className="text-red-500">{formState.error.name.join(', ')}</div>}
       </div>
 
@@ -29,7 +38,9 @@ export function ProductForm({ product }: ProductFormProps) {
         <textarea
           name="description"
           defaultValue={product?.description}
-          className="w-full rounded border p-2"
+          className={cn('w-full rounded border p-2', {
+            'border-red-500': formState?.error?.description,
+          })}
           rows={4}
           required
         />
@@ -43,7 +54,9 @@ export function ProductForm({ product }: ProductFormProps) {
           type="number"
           defaultValue={product?.price}
           step="0.01"
-          className="w-full rounded border p-2"
+          className={cn('w-full rounded border p-2', {
+            'border-red-500': formState?.error?.price,
+          })}
           required
         />
         {formState?.error?.price && <div className="text-red-500">{formState.error.price.join(', ')}</div>}
@@ -55,21 +68,39 @@ export function ProductForm({ product }: ProductFormProps) {
           name="images"
           type="url"
           defaultValue={product?.images && product?.images.length > 0 ? product?.images[0] : ''}
-          className="w-full rounded border p-2"
+          className={cn('w-full rounded border p-2', {
+            'border-red-500': formState?.error?.images,
+          })}
         />
         {formState?.error?.images && <div className="text-red-500">{formState.error.images.join(', ')}</div>}
       </div>
 
       <div>
         <label className="mb-1 block text-sm font-medium">Category</label>
-        <select name="categoryId" defaultValue={product?.categoryId} className="w-full rounded border p-2" required>
+        {/* <select
+          name="categoryId"
+          defaultValue={product?.categoryId}
+          className={cn('w-full rounded border p-2', {
+            'border-red-500': formState?.error?.categoryId,
+          })}
+          required
+        >
           <option value="">Select a category</option>
           {categories?.map((category) => (
             <option key={category.id} value={category.id}>
               {category.name}
             </option>
           ))}
-        </select>
+        </select> */}
+
+        <SelectSearchable
+          items={categories?.map((category) => ({ id: category.id, name: category.name })) ?? []}
+          placeholder="category"
+          createLink="/admin/categories/create"
+          inputName="categoryId"
+          defaultValue={product?.categoryId}
+        />
+
         {formState?.error?.categoryId && <div className="text-red-500">{formState.error.categoryId.join(', ')}</div>}
       </div>
 

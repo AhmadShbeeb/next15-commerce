@@ -5,29 +5,12 @@ import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 
 import { DataTableColumnHeader } from '@/components/DataTableColumnHeader';
-import { SerializedProductPaginated } from '@/types/serialized-types';
-import { Edit, EllipsisVertical, Trash, User } from 'lucide-react';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import {
-  DialogHeader,
-  DialogFooter,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog';
-import { useState } from 'react';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useRouter } from 'next/navigation';
-import { DeleteTableRowButton } from '@/components/delete-table-row-button';
+import { TableDialogMenu } from '@/components/table-dialog-menu';
 import { REACT_QUERY_KEYS } from '@/lib/constants';
 import { deleteProduct } from '@/server/product/actions';
+import { SerializedProductPaginated } from '@/types/serialized-types';
+import { User } from 'lucide-react';
+import Image from 'next/image';
 
 export const Columns: ColumnDef<SerializedProductPaginated['items'][number]>[] = [
   {
@@ -62,6 +45,12 @@ export const Columns: ColumnDef<SerializedProductPaginated['items'][number]>[] =
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
   },
   {
+    id: 'category',
+    accessorKey: 'category.name',
+    meta: 'Category',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Category" />,
+  },
+  {
     id: 'price',
     accessorKey: 'price',
     meta: 'Price',
@@ -78,60 +67,14 @@ export const Columns: ColumnDef<SerializedProductPaginated['items'][number]>[] =
     id: 'actions',
     cell: ({ row }) => {
       const product = row.original;
-      const router = useRouter();
-
-      const [dialogOpened, setDialogOpened] = useState(false);
 
       return (
-        <Dialog open={dialogOpened} onOpenChange={setDialogOpened}>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <EllipsisVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                className="flex cursor-pointer justify-between"
-                onClick={() => {
-                  router.push(`/admin/products/${product.id}/update`);
-                }}
-              >
-                Update
-                <Edit className="h-6 w-6 text-blue-500" />
-              </DropdownMenuItem>
-
-              <DropdownMenuItem
-                className="flex cursor-pointer justify-between"
-                onClick={() => {
-                  setDialogOpened(true);
-                }}
-              >
-                Delete <Trash className="h-6 w-6 text-red-500" />
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-          {dialogOpened && (
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Are you sure?</DialogTitle>
-              </DialogHeader>
-              <DialogDescription>This action cannot be undone.</DialogDescription>
-              <DialogFooter>
-                <DeleteTableRowButton
-                  rowId={product.id}
-                  queryKey={REACT_QUERY_KEYS.PAGINATED_PRODUCTS}
-                  setDialogOpened={setDialogOpened}
-                  deleteAction={deleteProduct}
-                />
-                <Button variant="outline" onClick={() => setDialogOpened(false)}>
-                  Cancel
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          )}
-        </Dialog>
+        <TableDialogMenu
+          updateLink={`/admin/products/${product.id}/update`}
+          rowId={product.id}
+          deleteAction={deleteProduct}
+          queryKey={REACT_QUERY_KEYS.PAGINATED_PRODUCTS}
+        />
       );
     },
   },
