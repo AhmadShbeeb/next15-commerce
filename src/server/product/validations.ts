@@ -5,6 +5,7 @@ const productSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().min(1, 'Description is required'),
   price: z.coerce.number().positive('Price must be greater than 0'),
+  categoryId: z.string().min(1, 'Category is required'),
   // images: z.array(z.string().url('Invalid image URL')).optional().default([]),
 });
 
@@ -14,6 +15,7 @@ export const validateProductForm = (formData: FormData) => {
     name: formData.get('name'),
     description: formData.get('description'),
     price: formData.get('price'),
+    categoryId: formData.get('categoryId'),
     // images: formData.get('images'),
   });
 

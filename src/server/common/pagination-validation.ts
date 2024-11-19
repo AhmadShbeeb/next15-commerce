@@ -6,7 +6,7 @@ const paginationQuerySchema = z.object({
   limit: z.coerce
     .number()
     .int('Limit must be an integer')
-    .positive('Limit must be greater than 0')
+    .min(-1, 'Limit must be greater or equal than -1')
     .max(100, 'Limit cannot exceed 100')
     .default(10),
   orderBy: z.string().optional(),
@@ -28,3 +28,5 @@ export const validatePaginationQuery = (searchParams: URLSearchParams) => {
 
   return parsedData;
 };
+
+export type PaginationQuery = z.infer<typeof paginationQuerySchema>;

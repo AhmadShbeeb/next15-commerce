@@ -9,18 +9,24 @@ export function AdminSidebar() {
   const isActive = (path: string) => pathname.startsWith(path);
 
   return (
-    <aside className='min-w-52 bg-slate-700 text-white min-h-screen p-4'>
-      <h1 className='text-xl font-bold mb-8'>Admin Dashboard</h1>
-      <nav className='space-y-2'>
+    <aside className="min-h-screen min-w-52 bg-slate-700 p-4 text-white">
+      <h1 className="mb-8 text-xl font-bold">Admin Dashboard</h1>
+      <nav className="space-y-2">
         <Link
-          href='/admin/products'
-          className={`block p-2 rounded ${isActive('/admin/products') ? 'bg-blue-600' : 'hover:bg-gray-800'}`}
+          href="/admin/products"
+          className={`block rounded p-2 ${isActive('/admin/products') ? 'bg-blue-600' : 'hover:bg-gray-800'}`}
         >
           Products
         </Link>
         <Link
-          href='/admin/orders'
-          className={`block p-2 rounded ${isActive('/admin/orders') ? 'bg-blue-600' : 'hover:bg-gray-800'}`}
+          href="/admin/categories"
+          className={`block rounded p-2 ${isActive('/admin/categories') ? 'bg-blue-600' : 'hover:bg-gray-800'}`}
+        >
+          Categories
+        </Link>
+        <Link
+          href="/admin/orders"
+          className={`block rounded p-2 ${isActive('/admin/orders') ? 'bg-blue-600' : 'hover:bg-gray-800'}`}
         >
           Orders
         </Link>

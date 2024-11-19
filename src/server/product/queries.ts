@@ -17,6 +17,9 @@ export async function getProducts({
 } = {}) {
   const [products, total] = await Promise.all([
     prisma.product.findMany({
+      include: {
+        category: true,
+      },
       ...(query && {
         where: {
           OR: [

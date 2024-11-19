@@ -1,6 +1,10 @@
-import { Product, Order, OrderItem, User } from '@prisma/client';
+import { Order, OrderItem, Prisma, User } from '@prisma/client';
 
-export type SerializedProduct = Omit<Product, 'price'> & {
+type ProductWithCategory = Prisma.ProductGetPayload<{
+  include: { category: true };
+}>;
+
+export type SerializedProduct = Omit<ProductWithCategory, 'price'> & {
   price: number;
 };
 
@@ -27,6 +31,21 @@ export type SerializedOrder = Omit<Order, 'total'> & {
 
 export type SerializedOrderPaginated = {
   items: SerializedOrder[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+};
+
+export type SerializedCategory = {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type SerializedCategoryPaginated = {
+  items: SerializedCategory[];
   total: number;
   totalPages: number;
   currentPage: number;

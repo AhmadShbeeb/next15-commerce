@@ -20,12 +20,14 @@ export async function upsertProduct(previousState: unknown, formData: FormData) 
         name: parsedFormData.name,
         description: parsedFormData.description,
         price: parsedFormData.price,
+        categoryId: parsedFormData.categoryId,
         // images: parsedFormData.images,
       },
       create: {
         name: parsedFormData.name,
         description: parsedFormData.description,
         price: parsedFormData.price,
+        categoryId: parsedFormData.categoryId,
         // images: parsedFormData.images,
       },
     });
@@ -49,6 +51,8 @@ export async function deleteProduct(prevState: unknown, productId: string) {
     await prisma.product.delete({
       where: { id: parsedProductId },
     });
+
+    return { success: true };
   } catch (error) {
     console.error('Delete product error:', JSON.stringify(error, null, 2));
     if (error instanceof ZodError) {
@@ -61,6 +65,4 @@ export async function deleteProduct(prevState: unknown, productId: string) {
     }
     return { success: false, error: { error: ['Failed to delete product'] } };
   }
-
-  revalidatePath('/admin/products');
 }

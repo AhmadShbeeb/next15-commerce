@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client';
 
 import type { ColumnDef } from '@tanstack/react-table';
@@ -17,7 +18,6 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { useState } from 'react';
-import { DeleteProductButton } from './delete-product-button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,6 +25,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { useRouter } from 'next/navigation';
+import { DeleteTableRowButton } from '@/components/delete-table-row-button';
+import { REACT_QUERY_KEYS } from '@/lib/constants';
+import { deleteProduct } from '@/server/product/actions';
 
 export const Columns: ColumnDef<SerializedProductPaginated['items'][number]>[] = [
   {
@@ -116,7 +119,12 @@ export const Columns: ColumnDef<SerializedProductPaginated['items'][number]>[] =
               </DialogHeader>
               <DialogDescription>This action cannot be undone.</DialogDescription>
               <DialogFooter>
-                <DeleteProductButton productId={product.id} setDialogOpened={setDialogOpened} />
+                <DeleteTableRowButton
+                  rowId={product.id}
+                  queryKey={REACT_QUERY_KEYS.PAGINATED_PRODUCTS}
+                  setDialogOpened={setDialogOpened}
+                  deleteAction={deleteProduct}
+                />
                 <Button variant="outline" onClick={() => setDialogOpened(false)}>
                   Cancel
                 </Button>

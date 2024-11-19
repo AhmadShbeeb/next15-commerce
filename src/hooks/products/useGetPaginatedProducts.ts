@@ -2,6 +2,7 @@ import { SerializedProductPaginated } from '@/types/serialized-types';
 import { useQuery } from '@tanstack/react-query';
 import { PaginationState, SortingState } from '@tanstack/react-table';
 import { REACT_QUERY_KEYS } from '@/lib/constants';
+import { paginationSearchParams } from '@/lib/utils';
 export const useGetPaginatedProducts = (
   debouncedSearchTerm: string,
   pagination: PaginationState,
@@ -18,10 +19,10 @@ export const useGetPaginatedProducts = (
       sorting[0]?.desc,
     ],
     queryFn: async () => {
-      const searchParams = new URLSearchParams({
+      const searchParams = paginationSearchParams({
         query: debouncedSearchTerm,
-        page: String(pagination.pageIndex + 1),
-        limit: String(pagination.pageSize),
+        page: pagination.pageIndex + 1,
+        limit: pagination.pageSize,
         orderBy: sorting[0]?.id,
         orderDirection: sorting[0]?.desc ? 'desc' : 'asc',
       });

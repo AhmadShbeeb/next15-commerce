@@ -14,6 +14,8 @@ export function ReactQueryProvider({ children }: { children: React.ReactNode }) 
             staleTime: 0,
             refetchOnWindowFocus: false,
             refetchOnMount: true,
+            retry: 1,
+            retryDelay: 300,
           },
         },
       }),
