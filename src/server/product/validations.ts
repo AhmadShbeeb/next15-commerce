@@ -6,6 +6,9 @@ const productSchema = z.object({
   description: z.string().min(1, 'Description is required'),
   price: z.coerce.number().positive('Price must be greater than 0'),
   categoryId: z.string().min(1, 'Category is required'),
+  colorId: z.string().min(1, 'Color is required'),
+  sizeId: z.string().min(1, 'Size is required'),
+  quantity: z.coerce.number().positive('Quantity must be greater than 0'),
   // images: z.array(z.string().url('Invalid image URL')).optional().default([]),
 });
 
@@ -16,6 +19,9 @@ export const validateProductForm = (formData: FormData) => {
     description: formData.get('description'),
     price: formData.get('price'),
     categoryId: formData.get('categoryId'),
+    colorId: formData.get('colorId'),
+    sizeId: formData.get('sizeId'),
+    quantity: formData.get('quantity'),
     // images: formData.get('images'),
   });
 

@@ -68,6 +68,7 @@ export async function getProduct(id: string) {
     include: {
       category: true,
       color: true,
+      size: true,
     },
   });
 

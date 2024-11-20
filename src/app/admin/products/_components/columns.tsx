@@ -57,6 +57,12 @@ export const Columns: ColumnDef<SerializedProductPaginated['items'][number]>[] =
     header: ({ column }) => <DataTableColumnHeader column={column} title="Price" />,
   },
   {
+    id: 'quantity',
+    accessorKey: 'quantity',
+    meta: 'Quantity',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Quantity" />,
+  },
+  {
     id: 'createdAt',
     accessorKey: 'createdAt',
     meta: 'Created At',

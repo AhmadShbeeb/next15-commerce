@@ -21,6 +21,9 @@ export async function upsertProduct(previousState: unknown, formData: FormData) 
         description: parsedFormData.description,
         price: parsedFormData.price,
         categoryId: parsedFormData.categoryId,
+        colorId: parsedFormData.colorId,
+        sizeId: parsedFormData.sizeId,
+        quantity: parsedFormData.quantity,
         // images: parsedFormData.images,
       },
       create: {
@@ -28,6 +31,9 @@ export async function upsertProduct(previousState: unknown, formData: FormData) 
         description: parsedFormData.description,
         price: parsedFormData.price,
         categoryId: parsedFormData.categoryId,
+        colorId: parsedFormData.colorId,
+        sizeId: parsedFormData.sizeId,
+        quantity: parsedFormData.quantity,
         // images: parsedFormData.images,
       },
     });

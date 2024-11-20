@@ -16,8 +16,11 @@ model Product {
   OrderItem   OrderItem[]
   categoryId  String
   colorId     String
+  sizeId      String
+  quantity    Int
   category    Category    @relation(fields: [categoryId], references: [id])
   color       Color       @relation(fields: [colorId], references: [id])
+  size        Size        @relation(fields: [sizeId], references: [id])
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }
@@ -31,6 +34,14 @@ model Category {
 }
 
 model Color {
+  id        String    @id @default(cuid())
+  name      String
+  products  Product[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Size {
   id        String    @id @default(cuid())
   name      String
   products  Product[]
