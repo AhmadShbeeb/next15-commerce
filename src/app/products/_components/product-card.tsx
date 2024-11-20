@@ -28,7 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-lg">
       <div className="relative aspect-square">
         <Image
           src={product.images?.[0] || '/placeholder.jpg'}

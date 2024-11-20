@@ -127,13 +127,15 @@ export function DataTable<TData, TValue>({
               placeholder={searchPlaceholder}
             />
             {searchQuery && (
-              <button
+              <Button
                 onClick={() => handleSearch('')}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                variant="ghost"
+                size="sm"
+                className="absolute right-2 top-1/2 h-auto -translate-y-1/2 p-0"
                 type="button"
               >
-                <X />
-              </button>
+                <X className="h-4 w-4" />
+              </Button>
             )}
           </div>
         </div>

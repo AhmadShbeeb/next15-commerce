@@ -58,10 +58,10 @@ export async function getOrders({
     }),
   ]);
 
-  const serializedOrders = orders.map(order => ({
+  const serializedOrders = orders.map((order) => ({
     ...order,
     total: Number(order.total),
-    items: order.items.map(item => ({
+    items: order.items.map((item) => ({
       ...item,
       price: Number(item.price),
     })),
@@ -93,12 +93,16 @@ export async function getUserOrders(userId: string) {
     },
   });
 
-  const serializedOrders = orders.map(order => ({
+  const serializedOrders = orders.map((order) => ({
     ...order,
     total: Number(order.total),
-    items: order.items.map(item => ({
+    items: order.items.map((item) => ({
       ...item,
       price: Number(item.price),
+      product: {
+        ...item.product,
+        price: Number(item.product.price),
+      },
     })),
   }));
 
@@ -122,7 +126,7 @@ export async function getOrder(id: string) {
   return {
     ...order,
     total: Number(order.total),
-    items: order.items.map(item => ({
+    items: order.items.map((item) => ({
       ...item,
       price: Number(item.price),
     })),

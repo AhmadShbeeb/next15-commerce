@@ -1,4 +1,4 @@
-import { Order, OrderItem, Prisma, User } from '@prisma/client';
+import { Order, OrderItem, Prisma } from '@prisma/client';
 
 type ProductWithCategory = Prisma.ProductGetPayload<{
   include: { category: true; color: true; size: true };
@@ -26,7 +26,6 @@ export type SerializedOrderItem = Omit<OrderItem, 'price'> & {
 export type SerializedOrder = Omit<Order, 'total'> & {
   total: number;
   items: SerializedOrderItem[];
-  user: User;
 };
 
 export type SerializedOrderPaginated = {
