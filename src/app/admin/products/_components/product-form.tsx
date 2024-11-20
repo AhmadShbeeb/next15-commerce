@@ -1,12 +1,15 @@
 'use client';
 
+import { SelectSearchable } from '@/components/select-searchable';
+import { useGetCategories } from '@/hooks/categories/useGetCategories';
+import { useGetColors } from '@/hooks/colors/useGetColors';
+import { cn } from '@/lib/utils';
+import { upsertProduct } from '@/server/product/actions';
 import { SerializedProduct } from '@/types/serialized-types';
 import { useRouter } from 'next/navigation';
-import { upsertProduct } from '@/server/product/actions';
 import { useActionState } from 'react';
-import { useGetCategories } from '@/hooks/categories/useGetCategories';
-import { cn } from '@/lib/utils';
-import { SelectSearchable } from '@/components/select-searchable';
+import { CategoryForm } from '../../categories/_components/category-form';
+import { ColorForm } from './color-form';
 interface ProductFormProps {
   product?: SerializedProduct;
 }
@@ -14,7 +17,9 @@ interface ProductFormProps {
 export function ProductForm({ product }: ProductFormProps) {
   const router = useRouter();
   const [formState, formAction, isPending] = useActionState(upsertProduct, null);
+
   const { data: categories } = useGetCategories();
+  const { data: colors } = useGetColors();
 
   return (
     <form action={formAction} className="space-y-6">
@@ -77,31 +82,29 @@ export function ProductForm({ product }: ProductFormProps) {
 
       <div>
         <label className="mb-1 block text-sm font-medium">Category</label>
-        {/* <select
-          name="categoryId"
-          defaultValue={product?.categoryId}
-          className={cn('w-full rounded border p-2', {
-            'border-red-500': formState?.error?.categoryId,
-          })}
-          required
-        >
-          <option value="">Select a category</option>
-          {categories?.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
-          ))}
-        </select> */}
-
         <SelectSearchable
           items={categories?.map((category) => ({ id: category.id, name: category.name })) ?? []}
           placeholder="category"
-          createLink="/admin/categories/create"
           inputName="categoryId"
           defaultValue={product?.categoryId}
+          isError={!!formState?.error?.categoryId}
+          Form={CategoryForm}
         />
-
         {formState?.error?.categoryId && <div className="text-red-500">{formState.error.categoryId.join(', ')}</div>}
+      </div>
+
+      <div>
+        <label className="mb-1 block text-sm font-medium">Color</label>
+        <SelectSearchable
+          items={colors?.map((color) => ({ id: color.id, name: color.name })) ?? []}
+          placeholder="color"
+          inputName="colorId"
+          defaultValue={product?.colorId}
+          isError={!!formState?.error?.colorId}
+          // form={<ColorForm color={product?.color} />}
+          Form={ColorForm}
+        />
+        {formState?.error?.colorId && <div className="text-red-500">{formState.error.colorId.join(', ')}</div>}
       </div>
 
       <div className="flex gap-4">

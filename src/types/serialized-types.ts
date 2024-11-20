@@ -1,7 +1,7 @@
 import { Order, OrderItem, Prisma, User } from '@prisma/client';
 
 type ProductWithCategory = Prisma.ProductGetPayload<{
-  include: { category: true };
+  include: { category: true; color: true };
 }>;
 
 export type SerializedProduct = Omit<ProductWithCategory, 'price'> & {
@@ -46,6 +46,21 @@ export type SerializedCategory = {
 
 export type SerializedCategoryPaginated = {
   items: SerializedCategory[];
+  total: number;
+  totalPages: number;
+  currentPage: number;
+  pageSize: number;
+};
+
+export type SerializedColor = {
+  id: string;
+  name: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
+export type SerializedColorPaginated = {
+  items: SerializedColor[];
   total: number;
   totalPages: number;
   currentPage: number;

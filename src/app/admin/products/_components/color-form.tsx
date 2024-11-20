@@ -2,31 +2,32 @@
 
 import { REACT_QUERY_KEYS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
-import { deleteCategory, upsertCategory } from '@/server/category/actions';
+import { upsertColor } from '@/server/color/actions';
+import { deleteColor } from '@/server/color/actions';
 import { useQueryClient } from '@tanstack/react-query';
 import { startTransition, useActionState, useEffect } from 'react';
 
-interface CategoryFormProps {
+interface ColorFormProps {
   id?: string;
   name?: string;
   setMenuOpen: (open: boolean) => void;
 }
 
-export function CategoryForm({ id, name, setMenuOpen }: CategoryFormProps) {
-  const [upsertState, upsertAction, isUpserting] = useActionState(upsertCategory, null);
-  const [deleteState, deleteAction, isDeleting] = useActionState(deleteCategory, null);
+export function ColorForm({ id, name, setMenuOpen }: ColorFormProps) {
+  const [formState, formAction, isPending] = useActionState(upsertColor, null);
+  const [deleteState, deleteAction, isDeleting] = useActionState(deleteColor, null);
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    if (upsertState?.success || deleteState?.success) {
-      setMenuOpen(false);
+    if (formState?.success || deleteState?.success) {
       document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); // Close the dialog
-      queryClient.invalidateQueries({ queryKey: [REACT_QUERY_KEYS.CATEGORIES] });
+      setMenuOpen(false);
+      queryClient.invalidateQueries({ queryKey: [REACT_QUERY_KEYS.COLORS] });
     }
-  }, [upsertState?.success, deleteState?.success, queryClient, setMenuOpen]);
+  }, [formState?.success, deleteState?.success, queryClient, setMenuOpen]);
 
   return (
-    <form action={upsertAction} className="space-y-6">
+    <form action={formAction} className="space-y-6">
       <input type="hidden" name="id" defaultValue={id} />
       <div>
         <label className="mb-1 block text-sm font-medium">Name</label>
@@ -34,19 +35,19 @@ export function CategoryForm({ id, name, setMenuOpen }: CategoryFormProps) {
           name="name"
           type="text"
           defaultValue={name}
-          className={cn('w-full rounded border p-2', !!upsertState?.error?.name && 'border-red-500')}
+          className={cn('w-full rounded border p-2', !!formState?.error?.name && 'border-red-500')}
           required
         />
-        {upsertState?.error?.name && <div className="text-red-500">{upsertState.error.name.join(', ')}</div>}
+        {formState?.error?.name && <div className="text-red-500">{formState.error.name.join(', ')}</div>}
       </div>
 
       <div className="flex gap-4">
         <button
           type="submit"
-          disabled={isUpserting}
+          disabled={isPending}
           className="rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:bg-gray-400"
         >
-          {isUpserting ? 'Saving...' : id ? 'Update Category' : 'Create Category'}
+          {isPending ? 'Saving...' : id ? 'Update Color' : 'Create Color'}
         </button>
         {id && (
           <button
@@ -59,7 +60,7 @@ export function CategoryForm({ id, name, setMenuOpen }: CategoryFormProps) {
               });
             }}
           >
-            {isDeleting ? 'Deleting...' : 'Delete Category'}
+            {isDeleting ? 'Deleting...' : 'Delete Color'}
           </button>
         )}
         <button
@@ -68,7 +69,7 @@ export function CategoryForm({ id, name, setMenuOpen }: CategoryFormProps) {
             document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); // Close the dialog
             setMenuOpen(false);
           }}
-          className="rounded-md border px-4 py-2 hover:bg-gray-100"
+          className="rounded-md border px-4 py-2 hover:bg-gray-200"
         >
           Cancel
         </button>

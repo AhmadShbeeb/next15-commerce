@@ -18,12 +18,12 @@ export function AdminSidebar() {
         >
           Products
         </Link>
-        <Link
+        {/* <Link
           href="/admin/categories"
           className={`block rounded p-2 ${isActive('/admin/categories') ? 'bg-blue-600' : 'hover:bg-gray-800'}`}
         >
           Categories
-        </Link>
+        </Link> */}
         <Link
           href="/admin/orders"
           className={`block rounded p-2 ${isActive('/admin/orders') ? 'bg-blue-600' : 'hover:bg-gray-800'}`}

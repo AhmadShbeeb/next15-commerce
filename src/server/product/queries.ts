@@ -67,6 +67,7 @@ export async function getProduct(id: string) {
     where: { id },
     include: {
       category: true,
+      color: true,
     },
   });
 
