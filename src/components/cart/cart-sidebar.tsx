@@ -1,7 +1,7 @@
 'use client';
 
 import { CartItem } from './cart-item';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart } from 'lucide-react';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -30,6 +30,7 @@ export function CartSidebar() {
         <SheetHeader>
           <SheetTitle>Shopping Cart</SheetTitle>
         </SheetHeader>
+        <SheetDescription />
         {items.length === 0 ? (
           <div className="flex h-full flex-col items-center justify-center space-y-4">
             <p className="text-muted-foreground">Your cart is empty</p>

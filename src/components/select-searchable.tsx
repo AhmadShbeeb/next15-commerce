@@ -99,7 +99,7 @@ export function SelectSearchable({
       <Dialog open={dialogOpened} onOpenChange={setDialogOpened}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>{selectedItem ? `Update ${placeholder}` : `Create a new ${placeholder}`}</DialogTitle>
+            <DialogTitle>{selectedItem?.id ? `Update ${placeholder}` : `Create a new ${placeholder}`}</DialogTitle>
           </DialogHeader>
           <DialogDescription />
           {Form && <Form id={selectedItem?.id} name={selectedItem?.name} setMenuOpen={setMenuOpen} />}

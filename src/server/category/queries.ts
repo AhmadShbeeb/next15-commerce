@@ -54,6 +54,10 @@ export async function getCategories({
 
 export async function getAllCategories() {
   return prisma.category.findMany({
+    select: {
+      id: true,
+      name: true,
+    },
     orderBy: {
       name: 'asc',
     },
