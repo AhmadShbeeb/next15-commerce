@@ -37,7 +37,7 @@ export function OrderStatusSelect({ orderId, initialStatus }: OrderStatusSelectP
 
   return (
     <Select value={initialStatus} onValueChange={handleStatusUpdate} disabled={isPending}>
-      <SelectTrigger className="w-[120px]">
+      <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select status" />
       </SelectTrigger>
       <SelectContent>

@@ -2,34 +2,48 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Package2, ShoppingCart } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export function AdminSidebar() {
   const pathname = usePathname();
 
   const isActive = (path: string) => pathname.startsWith(path);
 
+  const navItems = [
+    {
+      href: '/admin/products',
+      label: 'Products',
+      icon: Package2,
+    },
+    {
+      href: '/admin/orders',
+      label: 'Orders',
+      icon: ShoppingCart,
+    },
+  ];
+
   return (
-    <aside className="min-h-screen min-w-52 bg-slate-700 p-4 text-white">
+    <aside className="flex h-screen min-w-52 flex-col bg-muted p-4">
       <h1 className="mb-8 text-xl font-bold">Admin Dashboard</h1>
       <nav className="space-y-2">
-        <Link
-          href="/admin/products"
-          className={`block rounded p-2 ${isActive('/admin/products') ? 'bg-blue-600' : 'hover:bg-gray-800'}`}
-        >
-          Products
-        </Link>
-        {/* <Link
-          href="/admin/categories"
-          className={`block rounded p-2 ${isActive('/admin/categories') ? 'bg-blue-600' : 'hover:bg-gray-800'}`}
-        >
-          Categories
-        </Link> */}
-        <Link
-          href="/admin/orders"
-          className={`block rounded p-2 ${isActive('/admin/orders') ? 'bg-blue-600' : 'hover:bg-gray-800'}`}
-        >
-          Orders
-        </Link>
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          return (
+            <Button
+              key={item.href}
+              asChild
+              variant={isActive(item.href) ? 'secondary' : 'ghost'}
+              className={cn('w-full justify-start gap-2', isActive(item.href) && 'bg-blue-200 hover:bg-blue-300')}
+            >
+              <Link href={item.href}>
+                <Icon className="h-4 w-4" />
+                {item.label}
+              </Link>
+            </Button>
+          );
+        })}
       </nav>
     </aside>
   );

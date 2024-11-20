@@ -6,6 +6,9 @@ import { upsertColor } from '@/server/color/actions';
 import { deleteColor } from '@/server/color/actions';
 import { useQueryClient } from '@tanstack/react-query';
 import { startTransition, useActionState, useEffect } from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 
 interface ColorFormProps {
   id?: string;
@@ -29,31 +32,31 @@ export function ColorForm({ id, name, setMenuOpen }: ColorFormProps) {
   return (
     <form action={formAction} className="space-y-6">
       <input type="hidden" name="id" defaultValue={id} />
-      <div>
-        <label className="mb-1 block text-sm font-medium">Name</label>
-        <input
+
+      <div className="space-y-2">
+        <Label htmlFor="name">Name</Label>
+        <Input
+          id="name"
           name="name"
-          type="text"
           defaultValue={name}
-          className={cn('w-full rounded border p-2', !!formState?.error?.name && 'border-red-500')}
+          className={cn({
+            'border-destructive': formState?.error?.name,
+          })}
           required
         />
-        {formState?.error?.name && <div className="text-red-500">{formState.error.name.join(', ')}</div>}
+        {formState?.error?.name && <p className="text-sm text-destructive">{formState.error.name.join(', ')}</p>}
       </div>
 
       <div className="flex gap-4">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:bg-gray-400"
-        >
+        <Button type="submit" disabled={isPending}>
           {isPending ? 'Saving...' : id ? 'Update Color' : 'Create Color'}
-        </button>
+        </Button>
+
         {id && (
-          <button
+          <Button
             type="button"
+            variant="destructive"
             disabled={isDeleting}
-            className="rounded-md border bg-red-500 px-4 py-2 text-white hover:bg-red-600 disabled:bg-gray-400"
             onClick={() => {
               startTransition(() => {
                 deleteAction(id);
@@ -61,18 +64,19 @@ export function ColorForm({ id, name, setMenuOpen }: ColorFormProps) {
             }}
           >
             {isDeleting ? 'Deleting...' : 'Delete Color'}
-          </button>
+          </Button>
         )}
-        <button
+
+        <Button
           type="button"
+          variant="outline"
           onClick={() => {
-            document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' })); // Close the dialog
+            document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
             setMenuOpen(false);
           }}
-          className="rounded-md border px-4 py-2 hover:bg-gray-200"
         >
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );

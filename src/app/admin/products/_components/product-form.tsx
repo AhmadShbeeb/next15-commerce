@@ -12,6 +12,10 @@ import { useActionState } from 'react';
 import { CategoryForm } from './category-form';
 import { ColorForm } from './color-form';
 import { SizeForm } from './size-form';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Label } from '@/components/ui/label';
 
 interface ProductFormProps {
   product?: SerializedProduct;
@@ -28,66 +32,76 @@ export function ProductForm({ product }: ProductFormProps) {
   return (
     <form action={formAction} className="space-y-6">
       <input type="hidden" name="id" defaultValue={product?.id} />
-      <div>
-        <label className="mb-1 block text-sm font-medium">Name</label>
-        <input
+
+      <div className="space-y-2">
+        <Label htmlFor="name">Name</Label>
+        <Input
+          id="name"
           name="name"
-          type="text"
           defaultValue={product?.name}
-          className={cn('w-full rounded border p-2', {
-            'border-red-500': formState?.error?.name,
+          className={cn({
+            'border-destructive': formState?.error?.name,
           })}
           required
         />
-        {formState?.error?.name && <div className="text-red-500">{formState.error.name.join(', ')}</div>}
+        {formState?.error?.name && <p className="text-sm text-destructive">{formState.error.name.join(', ')}</p>}
       </div>
 
-      <div>
-        <label className="mb-1 block text-sm font-medium">Description</label>
-        <textarea
+      <div className="space-y-2">
+        <Label htmlFor="description">Description</Label>
+        <Textarea
+          id="description"
           name="description"
           defaultValue={product?.description}
-          className={cn('w-full rounded border p-2', {
-            'border-red-500': formState?.error?.description,
+          className={cn({
+            'border-destructive': formState?.error?.description,
           })}
           rows={4}
           required
         />
-        {formState?.error?.description && <div className="text-red-500">{formState.error.description.join(', ')}</div>}
+        {formState?.error?.description && (
+          <p className="text-sm text-destructive">{formState.error.description.join(', ')}</p>
+        )}
       </div>
 
-      <div className="flex gap-4">
-        <div>
-          <label className="mb-1 block text-sm font-medium">Price</label>
-          <input
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-2">
+          <Label htmlFor="price">Price</Label>
+          <Input
+            id="price"
             name="price"
             type="number"
             defaultValue={product?.price}
             step="0.01"
-            className={cn('w-full rounded border p-2', {
-              'border-red-500': formState?.error?.price,
+            className={cn({
+              'border-destructive': formState?.error?.price,
             })}
             required
           />
-          {formState?.error?.price && <div className="text-red-500">{formState.error.price.join(', ')}</div>}
+          {formState?.error?.price && <p className="text-sm text-destructive">{formState.error.price.join(', ')}</p>}
         </div>
-        <div>
-          <label className="mb-1 block text-sm font-medium">Quantity</label>
-          <input
+
+        <div className="space-y-2">
+          <Label htmlFor="quantity">Quantity</Label>
+          <Input
+            id="quantity"
             name="quantity"
             type="number"
             defaultValue={product?.quantity}
-            className={cn('w-full rounded border p-2', {
-              'border-red-500': formState?.error?.quantity,
+            className={cn({
+              'border-destructive': formState?.error?.quantity,
             })}
             required
           />
-          {formState?.error?.quantity && <div className="text-red-500">{formState.error.quantity.join(', ')}</div>}
+          {formState?.error?.quantity && (
+            <p className="text-sm text-destructive">{formState.error.quantity.join(', ')}</p>
+          )}
         </div>
       </div>
-      <div className="flex gap-4">
+
+      <div className="grid gap-4 sm:grid-cols-3">
         <div>
-          <label className="mb-1 block text-sm font-medium">Category</label>
+          <Label className="mb-1 block text-sm font-medium">Category</Label>
           <SelectSearchable
             items={categories?.map((category) => ({ id: category.id, name: category.name })) ?? []}
             placeholder="category"
@@ -100,7 +114,7 @@ export function ProductForm({ product }: ProductFormProps) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium">Color</label>
+          <Label className="mb-1 block text-sm font-medium">Color</Label>
           <SelectSearchable
             items={colors?.map((color) => ({ id: color.id, name: color.name })) ?? []}
             placeholder="color"
@@ -113,7 +127,7 @@ export function ProductForm({ product }: ProductFormProps) {
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium">Size</label>
+          <Label className="mb-1 block text-sm font-medium">Size</Label>
           <SelectSearchable
             items={sizes?.map((size) => ({ id: size.id, name: size.name })) ?? []}
             placeholder="size"
@@ -126,30 +140,27 @@ export function ProductForm({ product }: ProductFormProps) {
         </div>
       </div>
 
-      <div>
-        <label className="mb-1 block text-sm font-medium">Image URL</label>
-        <input
+      <div className="space-y-2">
+        <Label htmlFor="images">Image URL</Label>
+        <Input
+          id="images"
           name="images"
           type="url"
           defaultValue={product?.images && product?.images.length > 0 ? product?.images[0] : ''}
-          className={cn('w-full rounded border p-2', {
-            'border-red-500': formState?.error?.images,
+          className={cn({
+            'border-destructive': formState?.error?.images,
           })}
         />
-        {formState?.error?.images && <div className="text-red-500">{formState.error.images.join(', ')}</div>}
+        {formState?.error?.images && <p className="text-sm text-destructive">{formState.error.images.join(', ')}</p>}
       </div>
 
       <div className="flex gap-4">
-        <button
-          type="submit"
-          disabled={isPending}
-          className="rounded-md bg-blue-600 px-4 py-2 text-white transition-colors hover:bg-blue-700 disabled:bg-gray-400"
-        >
+        <Button type="submit" disabled={isPending}>
           {isPending ? 'Saving...' : product?.id ? 'Update Product' : 'Create Product'}
-        </button>
-        <button type="button" onClick={() => router.back()} className="rounded-md border px-4 py-2 hover:bg-gray-100">
+        </Button>
+        <Button type="button" variant="outline" onClick={() => router.back()}>
           Cancel
-        </button>
+        </Button>
       </div>
     </form>
   );

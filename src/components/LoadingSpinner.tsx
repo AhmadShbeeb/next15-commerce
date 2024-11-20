@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { LoaderPinwheel } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 type Props = {
   centerScreen?: boolean;
@@ -12,7 +12,7 @@ export const LoadingSpinner = ({ centerScreen = true }: Props) => {
         'fixed inset-0 h-full': centerScreen,
       })}
     >
-      <LoaderPinwheel className="h-20 w-20 animate-spin text-sky-500" aria-hidden="true" />
+      <Loader2 className="h-10 w-10 animate-spin text-primary" aria-hidden="true" />
     </div>
   );
 };

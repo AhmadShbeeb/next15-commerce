@@ -19,6 +19,8 @@ export async function getProducts({
     prisma.product.findMany({
       include: {
         category: true,
+        color: true,
+        size: true,
       },
       ...(query && {
         where: {

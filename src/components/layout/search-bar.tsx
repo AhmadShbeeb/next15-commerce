@@ -3,6 +3,8 @@
 import { useDebounce } from '@/hooks/common/useDebounce';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState, useCallback } from 'react';
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 
 export function SearchBar() {
   const router = useRouter();
@@ -39,26 +41,16 @@ export function SearchBar() {
   return (
     <div className="relative">
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search products..."
-          className="w-full rounded-md border px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-        />
-        <svg
-          className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-400"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+        <div className="relative">
+          <Input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search products..."
+            className="w-full pr-10"
           />
-        </svg>
+          <Search className="absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-muted-foreground" />
+        </div>
       </form>
     </div>
   );
