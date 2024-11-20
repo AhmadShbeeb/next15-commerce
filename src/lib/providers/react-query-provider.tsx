@@ -24,7 +24,7 @@ export function ReactQueryProvider({ children }: { children: React.ReactNode }) 
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools initialIsOpen={false} buttonPosition="top-left" position="top" />
+      <ReactQueryDevtools initialIsOpen={false} />
       <Toaster richColors position="top-center" />
     </QueryClientProvider>
   );

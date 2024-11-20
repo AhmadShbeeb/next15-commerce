@@ -18,9 +18,9 @@ import {
 import { Select, SelectContent, SelectItem, SelectValue, SelectTrigger } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { FilterIcon, X } from 'lucide-react';
-import { TableRefreshButton } from './TableRefreshButton';
-import { Input } from './ui/input';
-import { LoadingSpinner } from './LoadingSpinner';
+import { TableRefreshButton } from './table-refresh-button';
+import { Input } from '../ui/input';
+import { LoadingSpinner } from '../loading-spinner';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

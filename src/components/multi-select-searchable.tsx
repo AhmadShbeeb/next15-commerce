@@ -1,41 +1,55 @@
 'use client';
 
 import { Check, ChevronsUpDown, Edit } from 'lucide-react';
-
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-interface SelectSearchableProps {
+interface MultiSelectSearchableProps {
   items: { id: string; name: string }[];
   placeholder: string;
-  createLink?: string;
   Form?: React.JSXElementConstructor<{ id?: string; name?: string; setMenuOpen: (open: boolean) => void }>;
   inputName: string;
-  defaultValue?: string | string[];
+  defaultValue?: string[];
   isError?: boolean;
 }
 
-export function SelectSearchable({
+export function MultiSelectSearchable({
   items,
   placeholder,
   inputName,
-  defaultValue,
+  defaultValue = [],
   isError,
   Form,
-}: SelectSearchableProps) {
-  const [value, setValue] = useState(defaultValue ?? '');
+}: MultiSelectSearchableProps) {
+  const [values, setValues] = useState<string[]>(defaultValue);
   const [menuOpen, setMenuOpen] = useState(false);
   const [dialogOpened, setDialogOpened] = useState(false);
   const [selectedItem, setSelectedItem] = useState<{ id?: string; name?: string }>();
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const handleSelect = (itemId: string) => {
+    if (values.includes(itemId)) {
+      setValues(values.filter((value) => value !== itemId));
+    } else {
+      setValues([...values, itemId]);
+    }
+  };
+
+  const selectedItems = items.filter((item) => values.includes(item.id));
+
+  useEffect(() => {
+    if (items.length === 0) {
+      setValues([]);
+    }
+  }, [items.length]);
+
   return (
     <>
-      <input type="hidden" name={inputName} value={value} />
+      <input type="hidden" name={inputName} value={values.length > 0 ? values.join(',') : ''} />
       <Popover open={menuOpen} onOpenChange={setMenuOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -44,7 +58,7 @@ export function SelectSearchable({
             aria-expanded={menuOpen}
             className={cn('w-[240px] justify-between', { 'border-red-500': isError })}
           >
-            {value ? items?.find((item) => item.id === value)?.name : `Select a ${placeholder}...`}
+            {values.length > 0 ? `${selectedItems.map((item) => item.name).join(', ')}` : `Select ${placeholder}...`}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
@@ -69,12 +83,11 @@ export function SelectSearchable({
                     <CommandItem
                       value={item.name}
                       onSelect={() => {
-                        setValue(item.id);
-                        setMenuOpen(false);
+                        handleSelect(item.id);
                       }}
                       className="w-full"
                     >
-                      <Check className={cn('mr-2 h-4 w-4', value === item.id ? 'opacity-100' : 'opacity-0')} />
+                      <Check className={cn('mr-2 h-4 w-4', values.includes(item.id) ? 'opacity-100' : 'opacity-0')} />
                       {item.name}
                     </CommandItem>
 
@@ -101,7 +114,6 @@ export function SelectSearchable({
           <DialogHeader>
             <DialogTitle>{selectedItem ? `Update ${placeholder}` : `Create a new ${placeholder}`}</DialogTitle>
           </DialogHeader>
-          <DialogDescription />
           {Form && <Form id={selectedItem?.id} name={selectedItem?.name} setMenuOpen={setMenuOpen} />}
         </DialogContent>
       </Dialog>

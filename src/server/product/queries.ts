@@ -17,11 +17,6 @@ export async function getProducts({
 } = {}) {
   const [products, total] = await Promise.all([
     prisma.product.findMany({
-      include: {
-        category: true,
-        color: true,
-        size: true,
-      },
       ...(query && {
         where: {
           OR: [
@@ -37,6 +32,11 @@ export async function getProducts({
       }),
       skip: (page - 1) * limit,
       take: limit,
+      include: {
+        category: true,
+        colors: true,
+        sizes: true,
+      },
     }),
     prisma.product.count({
       ...(query && {
@@ -69,8 +69,8 @@ export async function getProduct(id: string) {
     where: { id },
     include: {
       category: true,
-      color: true,
-      size: true,
+      colors: true,
+      sizes: true,
     },
   });
 

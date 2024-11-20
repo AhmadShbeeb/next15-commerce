@@ -29,7 +29,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-lg">
-      <div className="relative aspect-square">
+      <div className="relative aspect-video">
         <Image
           src={product.images?.[0] || '/placeholder.jpg'}
           alt={product.name}
@@ -38,16 +38,29 @@ export function ProductCard({ product }: ProductCardProps) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
       </div>
-      <CardHeader className="space-y-2">
-        <div className="flex items-center justify-between">
-          <h3 className="font-semibold">{product.name}</h3>
+      <CardHeader className="flex flex-row items-center justify-between p-3">
+        <h3 className="font-semibold">{product.name}</h3>
+        <div className="flex items-center gap-2">
           {product.category?.name && <Badge variant="secondary">{product.category.name}</Badge>}
+          {product.quantity && <Badge variant="secondary">{product.quantity}</Badge>}
+          {product.sizes &&
+            product.sizes.map((size) => (
+              <Badge variant="secondary" key={size.id}>
+                {size.name}
+              </Badge>
+            ))}
+          {product.colors &&
+            product.colors.map((color) => (
+              <Badge variant="secondary" key={color.id}>
+                {color.name}
+              </Badge>
+            ))}
         </div>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-3">
         <p className="line-clamp-2 text-sm text-muted-foreground">{product.description}</p>
       </CardContent>
-      <CardFooter className="flex items-center justify-between">
+      <CardFooter className="flex items-center justify-between p-3">
         <span className="text-lg font-bold">${product.price}</span>
         <Button onClick={handleAddToCart}>Add to Cart</Button>
       </CardFooter>

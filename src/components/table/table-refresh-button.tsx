@@ -1,5 +1,5 @@
 import { useIsFetching } from '@tanstack/react-query';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 

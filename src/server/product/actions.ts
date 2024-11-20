@@ -13,28 +13,52 @@ export async function upsertProduct(previousState: unknown, formData: FormData) 
   try {
     await checkAuthorization();
     const { data: parsedFormData } = validateProductForm(formData);
+    console.log('🚀 ~ upsertProduct ~ parsedFormData:', parsedFormData);
 
     await prisma.product.upsert({
-      where: { id: parsedFormData.id },
-      update: {
-        name: parsedFormData.name,
-        description: parsedFormData.description,
-        price: parsedFormData.price,
-        categoryId: parsedFormData.categoryId,
-        colorId: parsedFormData.colorId,
-        sizeId: parsedFormData.sizeId,
-        quantity: parsedFormData.quantity,
-        // images: parsedFormData.images,
+      where: {
+        id: parsedFormData.id || '',
       },
       create: {
         name: parsedFormData.name,
         description: parsedFormData.description,
         price: parsedFormData.price,
         categoryId: parsedFormData.categoryId,
-        colorId: parsedFormData.colorId,
-        sizeId: parsedFormData.sizeId,
         quantity: parsedFormData.quantity,
         // images: parsedFormData.images,
+        colors: parsedFormData.colorIds
+          ? {
+              connect: parsedFormData.colorIds.map((colorId) => ({ id: colorId })),
+            }
+          : undefined,
+        sizes: parsedFormData.sizeIds
+          ? {
+              connect: parsedFormData.sizeIds.map((sizeId) => ({ id: sizeId })),
+            }
+          : undefined,
+      },
+      update: {
+        name: parsedFormData.name,
+        description: parsedFormData.description,
+        price: parsedFormData.price,
+        categoryId: parsedFormData.categoryId,
+        quantity: parsedFormData.quantity,
+        colors: {
+          set: [], // First disconnect all existing connections
+          ...(parsedFormData.colorIds
+            ? {
+                connect: parsedFormData.colorIds.map((colorId) => ({ id: colorId })),
+              }
+            : undefined),
+        },
+        sizes: {
+          set: [], // First disconnect all existing connections
+          ...(parsedFormData.sizeIds
+            ? {
+                connect: parsedFormData.sizeIds.map((sizeId) => ({ id: sizeId })),
+              }
+            : undefined),
+        },
       },
     });
   } catch (error) {

@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import { MultiSelectSearchable } from '@/components/multi-select-searchable';
 
 interface ProductFormProps {
   product?: SerializedProduct;
@@ -28,6 +29,7 @@ export function ProductForm({ product }: ProductFormProps) {
   const { data: categories } = useGetCategories();
   const { data: colors } = useGetColors();
   const { data: sizes } = useGetSizes();
+  console.log('🚀 ~ ProductForm ~ sizes:', sizes);
 
   return (
     <form action={formAction} className="space-y-6">
@@ -114,29 +116,29 @@ export function ProductForm({ product }: ProductFormProps) {
         </div>
 
         <div>
-          <Label className="mb-1 block text-sm font-medium">Color</Label>
-          <SelectSearchable
-            items={colors?.map((color) => ({ id: color.id, name: color.name })) ?? []}
-            placeholder="color"
-            inputName="colorId"
-            defaultValue={product?.colorId}
-            isError={!!formState?.error?.colorId}
-            Form={ColorForm}
+          <Label className="mb-1 block text-sm font-medium">Sizes</Label>
+          <MultiSelectSearchable
+            items={sizes?.map((size) => ({ id: size.id, name: size.name })) ?? []}
+            placeholder="sizes"
+            inputName="sizeIds"
+            defaultValue={product?.sizes?.map((size) => size.id)}
+            isError={!!formState?.error?.sizeIds}
+            Form={SizeForm}
           />
-          {formState?.error?.colorId && <div className="text-red-500">{formState.error.colorId.join(', ')}</div>}
+          {formState?.error?.sizeIds && <div className="text-red-500">{formState.error.sizeIds.join(', ')}</div>}
         </div>
 
         <div>
-          <Label className="mb-1 block text-sm font-medium">Size</Label>
-          <SelectSearchable
-            items={sizes?.map((size) => ({ id: size.id, name: size.name })) ?? []}
-            placeholder="size"
-            inputName="sizeId"
-            defaultValue={product?.sizeId}
-            isError={!!formState?.error?.sizeId}
-            Form={SizeForm}
+          <Label className="mb-1 block text-sm font-medium">Colors</Label>
+          <MultiSelectSearchable
+            items={colors?.map((color) => ({ id: color.id, name: color.name })) ?? []}
+            placeholder="colors"
+            inputName="colorIds"
+            defaultValue={product?.colors?.map((color) => color.id)}
+            isError={!!formState?.error?.colorIds}
+            Form={ColorForm}
           />
-          {formState?.error?.sizeId && <div className="text-red-500">{formState.error.sizeId.join(', ')}</div>}
+          {formState?.error?.colorIds && <div className="text-red-500">{formState.error.colorIds.join(', ')}</div>}
         </div>
       </div>
 

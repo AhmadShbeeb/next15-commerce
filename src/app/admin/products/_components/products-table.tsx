@@ -2,7 +2,7 @@
 
 import { SerializedProduct } from '@/types/serialized-types';
 import { Columns } from './columns';
-import { DataTable } from '@/components/DataTable';
+import { DataTable } from '@/components/table/table';
 import { useState } from 'react';
 import { useDebounce } from '@/hooks/common/useDebounce';
 import { useGetPaginatedProducts } from '@/hooks/products/useGetPaginatedProducts';

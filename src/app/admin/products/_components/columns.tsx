@@ -4,8 +4,8 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 
-import { DataTableColumnHeader } from '@/components/DataTableColumnHeader';
-import { TableDialogMenu } from '@/components/table-dialog-menu';
+import { DataTableColumnHeader } from '@/components/table/table-header';
+import { TableDialogMenu } from '@/components/table/table-dialog-menu';
 import { REACT_QUERY_KEYS } from '@/lib/constants';
 import { deleteProduct } from '@/server/product/actions';
 import { SerializedProductPaginated } from '@/types/serialized-types';

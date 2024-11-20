@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
-import { DataTableColumnHeader } from '@/components/DataTableColumnHeader';
+import { DataTableColumnHeader } from '@/components/table/table-header';
 import { SerializedOrder } from '@/types/serialized-types';
 import { OrderStatusSelect } from './order-status-select';
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { DeleteTableRowButton } from '@/components/delete-table-row-button';
+import { DeleteTableRowButton } from '@/components/table/table-delete-button';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,

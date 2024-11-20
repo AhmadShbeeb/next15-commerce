@@ -15,12 +15,10 @@ model Product {
   images      String[]
   OrderItem   OrderItem[]
   categoryId  String
-  colorId     String
-  sizeId      String
+  colors      Color[]
+  sizes       Size[]
   quantity    Int
   category    Category    @relation(fields: [categoryId], references: [id])
-  color       Color       @relation(fields: [colorId], references: [id])
-  size        Size        @relation(fields: [sizeId], references: [id])
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
 }

@@ -1,15 +1,19 @@
 import { z, ZodError } from 'zod';
 
-const productSchema = z.object({
+export const productSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(1, 'Name is required'),
   description: z.string().min(1, 'Description is required'),
-  price: z.coerce.number().positive('Price must be greater than 0'),
+  price: z.coerce.number().min(0.01, 'Price must be greater than 0'),
   categoryId: z.string().min(1, 'Category is required'),
-  colorId: z.string().min(1, 'Color is required'),
-  sizeId: z.string().min(1, 'Size is required'),
-  quantity: z.coerce.number().positive('Quantity must be greater than 0'),
-  // images: z.array(z.string().url('Invalid image URL')).optional().default([]),
+  quantity: z.coerce.number().min(0, 'Quantity must be 0 or greater'),
+  colorIds: z.string().transform((str) => (str ? str.split(',') : [])),
+  sizeIds: z.string().transform((str) => (str ? str.split(',') : [])),
+  images: z
+    .string()
+    .url('Must be a valid URL')
+    .transform((url) => [url])
+    .optional(),
 });
 
 export const validateProductForm = (formData: FormData) => {
@@ -19,8 +23,8 @@ export const validateProductForm = (formData: FormData) => {
     description: formData.get('description'),
     price: formData.get('price'),
     categoryId: formData.get('categoryId'),
-    colorId: formData.get('colorId'),
-    sizeId: formData.get('sizeId'),
+    colorIds: formData.get('colorIds'),
+    sizeIds: formData.get('sizeIds'),
     quantity: formData.get('quantity'),
     // images: formData.get('images'),
   });
