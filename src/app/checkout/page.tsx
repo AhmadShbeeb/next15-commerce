@@ -25,6 +25,7 @@ export default function CheckoutPage() {
 
   const handleQuantityChange = (productId: string, newQuantity: number) => {
     if (newQuantity < 1) return;
+    if (newQuantity > (items.find((item) => item.productId === productId)?.maxQuantity ?? -1)) return;
     dispatch(updateQuantity({ productId, quantity: newQuantity }));
   };
 
@@ -65,7 +66,7 @@ export default function CheckoutPage() {
                       <span className="w-8 text-center">{item.quantity}</span>
                       <Button
                         // TODO: Add max quantity
-
+                        disabled={item.quantity === item.maxQuantity}
                         variant="outline"
                         size="icon"
                         onClick={() => handleQuantityChange(item.productId, item.quantity + 1)}

@@ -23,6 +23,7 @@ export function ProductCard({ product }: ProductCardProps) {
         price: product.price,
         image: product.images?.[0],
         quantity: 1,
+        maxQuantity: product.quantity,
       }),
     );
   };

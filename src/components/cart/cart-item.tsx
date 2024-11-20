@@ -16,6 +16,7 @@ export function CartItem({ item }: CartItemProps) {
 
   const handleQuantityChange = (newQuantity: number) => {
     if (newQuantity < 1) return;
+    if (newQuantity > item.maxQuantity) return;
     dispatch(updateQuantity({ productId: item.productId, quantity: newQuantity }));
   };
 
@@ -39,6 +40,7 @@ export function CartItem({ item }: CartItemProps) {
           <span className="w-8 text-center">{item.quantity}</span>
           <Button
             // TODO: Add max quantity
+            disabled={item.quantity === item.maxQuantity}
             variant="outline"
             size="icon"
             className="h-8 w-8"
