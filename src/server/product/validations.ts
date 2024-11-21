@@ -9,6 +9,7 @@ export const productSchema = z.object({
   quantity: z.coerce.number().min(0, 'Quantity must be 0 or greater'),
   colorIds: z.string().transform((str) => (str ? str.split(',') : [])),
   sizeIds: z.string().transform((str) => (str ? str.split(',') : [])),
+  isFeatured: z.coerce.boolean(),
   images: z
     .string()
     .url('Must be a valid URL')
@@ -26,6 +27,7 @@ export const validateProductForm = (formData: FormData) => {
     colorIds: formData.get('colorIds'),
     sizeIds: formData.get('sizeIds'),
     quantity: formData.get('quantity'),
+    isFeatured: formData.get('isFeatured') === 'on',
     // images: formData.get('images'),
   });
 

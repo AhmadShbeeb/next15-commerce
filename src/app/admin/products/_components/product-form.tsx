@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { MultiSelectSearchable } from '@/components/multi-select-searchable';
+import { Switch } from '@/components/ui/switch';
 
 interface ProductFormProps {
   product?: SerializedProduct;
@@ -154,6 +155,11 @@ export function ProductForm({ product }: ProductFormProps) {
           })}
         />
         {formState?.error?.images && <p className="text-sm text-destructive">{formState.error.images.join(', ')}</p>}
+      </div>
+
+      <div className="flex items-center space-x-2">
+        <Switch id="isFeatured" name="isFeatured" defaultChecked={product?.isFeatured} />
+        <Label htmlFor="isFeatured">Featured Product</Label>
       </div>
 
       <div className="flex gap-4">

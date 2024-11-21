@@ -102,3 +102,27 @@ export async function getMaxPrice() {
 
   return maxPrice ? Number(maxPrice.price) : 0;
 }
+
+export async function getFeaturedProducts() {
+  const products = await prisma.product.findMany({
+    where: {
+      isFeatured: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    include: {
+      category: true,
+      colors: true,
+      sizes: true,
+    },
+    take: 10,
+  });
+
+  const serializedProducts = products.map((product) => ({
+    ...product,
+    price: Number(product.price),
+  }));
+
+  return serializedProducts;
+}

@@ -1,13 +1,17 @@
-import { ProductGrid } from '@/app/products/_components/product-grid';
-import { getProducts } from '@/server/product/queries';
+import { getFeaturedProducts } from '@/server/product/queries';
+import { FeaturedProducts } from './_components/featured-products';
+import { HeroSection } from './_components/hero-section';
 
 export default async function Home() {
-  const products = await getProducts();
+  const products = await getFeaturedProducts();
 
   return (
-    <main className="container mx-auto px-4 py-8">
-      <h1 className="mb-8 text-3xl font-bold">Our Products</h1>
-      <ProductGrid products={products} />
+    <main>
+      <HeroSection />
+      <div className="container mx-auto px-4 py-16">
+        <h2 className="mb-8 text-3xl font-bold">Featured Products</h2>
+        <FeaturedProducts products={products} />
+      </div>
     </main>
   );
 }

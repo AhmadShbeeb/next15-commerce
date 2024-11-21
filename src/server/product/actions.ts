@@ -26,6 +26,7 @@ export async function upsertProduct(previousState: unknown, formData: FormData) 
         categoryId: parsedFormData.categoryId,
         quantity: parsedFormData.quantity,
         // images: parsedFormData.images,
+        isFeatured: parsedFormData.isFeatured,
         colors: parsedFormData.colorIds
           ? {
               connect: parsedFormData.colorIds.map((colorId) => ({ id: colorId })),
@@ -43,6 +44,7 @@ export async function upsertProduct(previousState: unknown, formData: FormData) 
         price: parsedFormData.price,
         categoryId: parsedFormData.categoryId,
         quantity: parsedFormData.quantity,
+        isFeatured: parsedFormData.isFeatured,
         colors: {
           set: [], // First disconnect all existing connections
           ...(parsedFormData.colorIds
