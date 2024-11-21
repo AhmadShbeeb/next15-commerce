@@ -21,16 +21,16 @@ export const Columns: ColumnDef<SerializedProductPaginated['items'][number]>[] =
   },
   {
     id: 'image',
-    accessorKey: 'image',
+    accessorKey: 'images',
     header: 'Image',
     meta: 'Image',
     cell: ({ row }) => {
-      const image: string | undefined = row.getValue('image');
+      const image = row.original.images?.[0]?.url;
 
       return (
         <div className="flex h-14 w-14 items-center justify-center">
           {image ? (
-            <Image className="rounded" src={image} alt="img" />
+            <Image className="rounded" width={50} height={50} src={image} alt="img" />
           ) : (
             <ImageIcon className="h-14 w-14 rounded-md bg-slate-100" />
           )}
