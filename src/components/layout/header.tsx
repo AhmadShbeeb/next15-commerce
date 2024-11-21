@@ -21,11 +21,11 @@ export async function Header() {
             <SearchBar />
           </div>
 
-          <div className="flex items-center gap-2">
-            <CartSidebar />
+          <div className="flex items-center gap-3">
             <Button variant="ghost" asChild>
               <Link href="/products">Products</Link>
             </Button>
+            <CartSidebar />
             {session ? (
               <>
                 <Button variant="ghost" asChild>

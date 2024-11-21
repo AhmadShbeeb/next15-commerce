@@ -45,7 +45,7 @@ export function ProductCard({ product }: ProductCardProps) {
         <h3 className="font-semibold">{product.name}</h3>
         <div className="flex items-center gap-2">
           {product.category?.name && <Badge variant="secondary">{product.category.name}</Badge>}
-          {product.quantity && <Badge variant="secondary">{product.quantity}</Badge>}
+          {product.quantity <= 5 && <Badge variant="destructive">Low Stock</Badge>}
           {product.sizes &&
             product.sizes.map((size) => (
               <Badge variant="secondary" key={size.id}>
