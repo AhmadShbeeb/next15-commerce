@@ -5,7 +5,7 @@ import { removeItem, updateQuantity, updateItemOptions } from '@/lib/store/featu
 import Image from 'next/image';
 import type { CartItem } from '@/lib/store/features/cartSlice';
 import { Button } from '@/components/ui/button';
-import { Minus, Plus, Trash2 } from 'lucide-react';
+import { Minus, Plus, Trash2, ImageIcon } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface CartItemProps {
@@ -24,7 +24,11 @@ export function CartItem({ item }: CartItemProps) {
   return (
     <div className="flex items-center gap-4 rounded-lg border p-3">
       <div className="relative aspect-square h-20 w-20 overflow-hidden rounded-md">
-        <Image src={item.image || ''} alt={item.name} fill className="object-cover" sizes="80px" />
+        {item.image ? (
+          <Image src={item.image} alt={item.name} fill className="object-cover" sizes="80px" />
+        ) : (
+          <ImageIcon className="h-full w-full rounded-md bg-slate-100" />
+        )}
       </div>
       <div className="flex w-3/4 flex-col">
         <div className="flex items-center justify-between gap-3">

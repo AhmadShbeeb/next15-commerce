@@ -7,6 +7,7 @@ import { SerializedProduct } from '@/types/serialized-types';
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { ImageIcon } from 'lucide-react';
 
 interface ProductCardProps {
   product: SerializedProduct;
@@ -33,13 +34,17 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-lg">
       <div className="relative aspect-video">
-        <Image
-          src={product.images?.[0]?.url || ''}
-          alt={product.name}
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-        />
+        {product.images?.[0]?.url ? (
+          <Image
+            src={product.images?.[0]?.url}
+            alt={product.name}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          />
+        ) : (
+          <ImageIcon className="h-full w-full rounded-md bg-slate-100" />
+        )}
       </div>
       <CardHeader className="flex flex-row items-center justify-between p-3">
         <h3 className="font-semibold">{product.name}</h3>

@@ -9,7 +9,7 @@ import { TableDialogMenu } from '@/components/table/table-dialog-menu';
 import { REACT_QUERY_KEYS } from '@/lib/constants';
 import { deleteProduct } from '@/server/product/actions';
 import { SerializedProductPaginated } from '@/types/serialized-types';
-import { User } from 'lucide-react';
+import { ImageIcon } from 'lucide-react';
 import Image from 'next/image';
 
 export const Columns: ColumnDef<SerializedProductPaginated['items'][number]>[] = [
@@ -32,7 +32,7 @@ export const Columns: ColumnDef<SerializedProductPaginated['items'][number]>[] =
           {image ? (
             <Image className="rounded" src={image} alt="img" />
           ) : (
-            <User className="h-14 w-14 rounded-md bg-slate-100" />
+            <ImageIcon className="h-14 w-14 rounded-md bg-slate-100" />
           )}
         </div>
       );
