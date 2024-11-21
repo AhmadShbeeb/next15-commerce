@@ -24,6 +24,8 @@ export function ProductCard({ product }: ProductCardProps) {
         image: product.images?.[0],
         quantity: 1,
         maxQuantity: product.quantity,
+        availableSizes: product.sizes,
+        availableColors: product.colors,
       }),
     );
   };

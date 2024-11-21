@@ -6,10 +6,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { CheckoutForm } from './_components/checkout-form';
 import { useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from '@/lib/store/features/cartSlice';
+import { removeItem, updateItemOptions, updateQuantity } from '@/lib/store/features/cartSlice';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Trash2, Plus, Minus } from 'lucide-react';
+import { Select, SelectValue, SelectTrigger, SelectContent, SelectItem } from '@/components/ui/select';
 
 export default function CheckoutPage() {
   const { data: session } = useSession();
@@ -65,7 +66,6 @@ export default function CheckoutPage() {
                       </Button>
                       <span className="w-8 text-center">{item.quantity}</span>
                       <Button
-                        // TODO: Add max quantity
                         disabled={item.quantity === item.maxQuantity}
                         variant="outline"
                         size="icon"
@@ -73,6 +73,49 @@ export default function CheckoutPage() {
                       >
                         <Plus className="h-4 w-4" />
                       </Button>
+                      <div className="flex gap-2">
+                        {item.availableSizes && (
+                          <Select
+                            value={item.size?.id}
+                            onValueChange={(sizeId) => {
+                              const size = item.availableSizes?.find((s) => s.id === sizeId);
+                              dispatch(updateItemOptions({ productId: item.productId, size }));
+                            }}
+                          >
+                            <SelectTrigger className="w-[100px]">
+                              <SelectValue placeholder="Size" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {item.availableSizes.map((size) => (
+                                <SelectItem key={size.id} value={size.id}>
+                                  {size.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+
+                        {item.availableColors && (
+                          <Select
+                            value={item.color?.id}
+                            onValueChange={(colorId) => {
+                              const color = item.availableColors?.find((c) => c.id === colorId);
+                              dispatch(updateItemOptions({ productId: item.productId, color }));
+                            }}
+                          >
+                            <SelectTrigger className="w-[100px]">
+                              <SelectValue placeholder="Color" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {item.availableColors.map((color) => (
+                                <SelectItem key={color.id} value={color.id}>
+                                  {color.name}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>

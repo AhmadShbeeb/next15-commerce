@@ -33,19 +33,21 @@ model Category {
 }
 
 model Color {
-  id        String    @id @default(cuid())
+  id        String      @id @default(cuid())
   name      String
   products  Product[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  OrderItem OrderItem[]
 }
 
 model Size {
-  id        String    @id @default(cuid())
+  id        String      @id @default(cuid())
   name      String
   products  Product[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  OrderItem OrderItem[]
 }
 
 model Order {
@@ -65,8 +67,12 @@ model OrderItem {
   productId String
   quantity  Int
   price     Decimal
+  colorId   String
+  sizeId    String
   order     Order   @relation(fields: [orderId], references: [id])
   product   Product @relation(fields: [productId], references: [id])
+  color     Color   @relation(fields: [colorId], references: [id])
+  size      Size    @relation(fields: [sizeId], references: [id])
 }
 
 model Account {

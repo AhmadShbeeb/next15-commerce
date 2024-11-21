@@ -7,6 +7,10 @@ export interface CartItem {
   quantity: number;
   maxQuantity: number;
   image: string;
+  color?: { id: string; name: string };
+  size?: { id: string; name: string };
+  availableColors?: { id: string; name: string }[];
+  availableSizes?: { id: string; name: string }[];
 }
 
 interface CartState {
@@ -43,6 +47,20 @@ const cartSlice = createSlice({
       }
       state.total = state.items.reduce((total: number, item: CartItem) => total + item.price * item.quantity, 0);
     },
+    updateItemOptions: (
+      state: CartState,
+      action: PayloadAction<{
+        productId: string;
+        color?: { id: string; name: string };
+        size?: { id: string; name: string };
+      }>,
+    ) => {
+      const item = state.items.find((item) => item.productId === action.payload.productId);
+      if (item) {
+        if (action.payload.color) item.color = action.payload.color;
+        if (action.payload.size) item.size = action.payload.size;
+      }
+    },
     clearCart: (state: CartState) => {
       state.items = initialState.items;
       state.total = initialState.total;
@@ -50,5 +68,5 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addItem, removeItem, updateQuantity, clearCart } = cartSlice.actions;
+export const { addItem, removeItem, updateQuantity, updateItemOptions, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

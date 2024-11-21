@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from 'sonner';
 
 export function CheckoutForm() {
   const router = useRouter();
@@ -26,12 +27,41 @@ export function CheckoutForm() {
       router.replace(`/order-confirmation/${formState.data}`);
     }
 
+    if (formState?.error) {
+      // @ts-expect-error TODO: better error handling
+      formState.error?.forEach((error: string) => {
+        console.log(error);
+        toast.error(error);
+      });
+    }
+
     return () => {
       if (formState?.success) {
         dispatch(clearCart());
       }
     };
-  }, [formState?.success, formState?.data, dispatch, router]);
+  }, [formState?.success, formState?.data, dispatch, router, formState?.error]);
+
+  // const validateCartItems = () => {
+  //   const invalidItems = items.filter((item) => {
+  //     const needsSize = item.availableSizes && item.availableSizes.length > 0;
+  //     const needsColor = item.availableColors && item.availableColors.length > 0;
+  //     return (needsSize && !item.size) || (needsColor && !item.color);
+  //   });
+
+  //   if (invalidItems.length > 0) {
+  //     toast.error('Please select size and color for all items');
+  //     return false;
+  //   }
+  //   return true;
+  // };
+
+  // const handleSubmit = async (formData: FormData) => {
+  //   if (!validateCartItems()) {
+  //     return;
+  //   }
+  //   await createOrderAction(formData);
+  // };
 
   return (
     <Card>

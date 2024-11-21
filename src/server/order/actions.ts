@@ -42,6 +42,8 @@ export async function createOrder(prevState: unknown, formData: FormData) {
             productId: item.productId,
             quantity: item.quantity,
             price: item.price,
+            colorId: item.color.id,
+            sizeId: item.size.id,
           })),
         },
       },
@@ -50,6 +52,9 @@ export async function createOrder(prevState: unknown, formData: FormData) {
     return { success: true, data: order.id };
   } catch (error) {
     console.error('Create order error:', error);
+    if (error instanceof ZodError) {
+      return { success: false, error: error.flatten().fieldErrors?.items };
+    }
     return { success: false, error: { error: ['Failed to create order'] } };
   }
 }

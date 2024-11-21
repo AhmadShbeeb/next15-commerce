@@ -1,9 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import cartReducer from './features/cartSlice';
-import { useSelector as useBaseSelector } from 'react-redux';
-import { TypedUseSelectorHook } from 'react-redux';
-import { persistStore, persistReducer, PERSIST, PAUSE, FLUSH, REHYDRATE, PURGE, REGISTER } from 'redux-persist';
+import { TypedUseSelectorHook, useSelector as useBaseSelector } from 'react-redux';
+import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
+import cartReducer from './features/cartSlice';
 
 const persistConfig = {
   key: 'root',
@@ -18,10 +17,8 @@ export const store = configureStore({
   reducer: persistReducer(persistConfig, reducers),
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
-    }),
+      serializableCheck: false,
+    }).concat([]),
 });
 
 export type RootState = ReturnType<typeof reducers>;

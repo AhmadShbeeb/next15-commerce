@@ -14,6 +14,18 @@ export const orderSchema = z.object({
       productId: z.string(),
       quantity: z.coerce.number(),
       price: z.coerce.number(),
+      color: z.object(
+        {
+          id: z.string(),
+        },
+        { message: 'Color is required' },
+      ),
+      size: z.object(
+        {
+          id: z.string(),
+        },
+        { message: 'Size is required' },
+      ),
     }),
   ),
 });
