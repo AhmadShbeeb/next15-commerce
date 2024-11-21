@@ -8,10 +8,7 @@ export default async function Home() {
   return (
     <main>
       <HeroSection />
-      <div className="container mx-auto px-4 py-16">
-        <h2 className="mb-8 text-3xl font-bold">Featured Products</h2>
-        <FeaturedProducts products={products} />
-      </div>
+      <FeaturedProducts products={products} />
     </main>
   );
 }
