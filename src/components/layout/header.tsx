@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { SearchBar } from './search-bar';
-import { ADMIN_EMAILS } from '@/lib/constants';
 import { auth } from '@/auth';
 import { SignInButton } from './_components/sign-in-button';
 import { SignOutButton } from './_components/sign-out-button';
@@ -32,7 +31,7 @@ export async function Header() {
                 <Button variant="ghost" asChild>
                   <Link href="/profile">Profile</Link>
                 </Button>
-                {session.user?.email && ADMIN_EMAILS.includes(session.user.email) && (
+                {session.user?.role === 'SUPER_ADMIN' && (
                   <Button variant="ghost" asChild>
                     <Link href="/admin/products">Admin</Link>
                   </Button>
