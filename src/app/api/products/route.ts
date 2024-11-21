@@ -1,4 +1,3 @@
-import { checkAuthorization } from '@/server/common/check-authorization';
 import { validatePaginationQuery } from '@/server/common/pagination-validation';
 import { getProducts } from '@/server/product/queries';
 import { NextRequest, NextResponse } from 'next/server';
@@ -6,7 +5,6 @@ import { ZodError } from 'zod';
 
 export async function GET(request: NextRequest) {
   try {
-    await checkAuthorization();
     const { data: validatedQuery } = validatePaginationQuery(request.nextUrl.searchParams);
 
     const products = await getProducts({
@@ -14,7 +12,7 @@ export async function GET(request: NextRequest) {
       page: validatedQuery.page,
       limit: validatedQuery.limit,
       orderBy: validatedQuery.orderBy,
-      orderDirection: validatedQuery.orderDirection,
+      orderDirection: validatedQuery.orderDirection as 'asc' | 'desc' | undefined,
     });
 
     return NextResponse.json(products);
