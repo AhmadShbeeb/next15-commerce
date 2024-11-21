@@ -46,7 +46,7 @@ export function ProductForm({ product }: ProductFormProps) {
         <Input
           id="name"
           name="name"
-          defaultValue={product?.name}
+          defaultValue={formState?.previousState.get('name')?.toString() ?? product?.name}
           className={cn({
             'border-destructive': formState?.error?.name,
           })}
@@ -60,7 +60,7 @@ export function ProductForm({ product }: ProductFormProps) {
         <Textarea
           id="description"
           name="description"
-          defaultValue={product?.description}
+          defaultValue={formState?.previousState.get('description')?.toString() ?? product?.description}
           className={cn({
             'border-destructive': formState?.error?.description,
           })}
@@ -79,7 +79,7 @@ export function ProductForm({ product }: ProductFormProps) {
             id="price"
             name="price"
             type="number"
-            defaultValue={product?.price}
+            defaultValue={formState?.previousState.get('price')?.toString() ?? product?.price}
             step="0.01"
             className={cn({
               'border-destructive': formState?.error?.price,
@@ -95,7 +95,7 @@ export function ProductForm({ product }: ProductFormProps) {
             id="quantity"
             name="quantity"
             type="number"
-            defaultValue={product?.quantity}
+            defaultValue={formState?.previousState.get('quantity')?.toString() ?? product?.quantity}
             className={cn({
               'border-destructive': formState?.error?.quantity,
             })}
@@ -114,7 +114,7 @@ export function ProductForm({ product }: ProductFormProps) {
             items={categories?.map((category) => ({ id: category.id, name: category.name })) ?? []}
             placeholder="category"
             inputName="categoryId"
-            defaultValue={product?.categoryId}
+            defaultValue={formState?.previousState.get('categoryId')?.toString() ?? product?.categoryId}
             isError={!!formState?.error?.categoryId}
             Form={CategoryForm}
           />
@@ -127,7 +127,9 @@ export function ProductForm({ product }: ProductFormProps) {
             items={sizes?.map((size) => ({ id: size.id, name: size.name })) ?? []}
             placeholder="sizes"
             inputName="sizeIds"
-            defaultValue={product?.sizes?.map((size) => size.id)}
+            defaultValue={
+              formState?.previousState.get('sizeIds')?.toString().split(',') ?? product?.sizes?.map((size) => size.id)
+            }
             isError={!!formState?.error?.sizeIds}
             Form={SizeForm}
           />

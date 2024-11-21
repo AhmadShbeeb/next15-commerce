@@ -73,9 +73,9 @@ export async function upsertProduct(previousState: unknown, formData: FormData) 
   } catch (error) {
     console.error('Update product error:', JSON.stringify(error, null, 2));
     if (error instanceof ZodError) {
-      return { success: false, error: error.flatten().fieldErrors };
+      return { success: false, error: error.flatten().fieldErrors, previousState: formData };
     }
-    return { success: false, error: { error: ['Failed to update product'] } };
+    return { success: false, error: { error: ['Failed to update product'] }, previousState: formData };
   }
 
   revalidatePath('/admin/products');
