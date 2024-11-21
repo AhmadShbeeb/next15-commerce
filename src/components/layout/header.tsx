@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import { SearchBar } from './search-bar';
 import { auth } from '@/auth';
-import { SignInButton } from './_components/sign-in-button';
-import { SignOutButton } from './_components/sign-out-button';
+import { SignOutButton } from '../../app/sign-in/_components/sign-out-button';
 import { Button } from '@/components/ui/button';
 import { CartSidebar } from '../cart/cart-sidebar';
 
@@ -39,7 +38,9 @@ export async function Header() {
                 <SignOutButton />
               </>
             ) : (
-              <SignInButton />
+              <Button variant="outline" asChild>
+                <Link href="/sign-in">Sign In</Link>
+              </Button>
             )}
           </div>
         </div>

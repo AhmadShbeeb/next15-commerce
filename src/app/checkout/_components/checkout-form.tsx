@@ -42,27 +42,6 @@ export function CheckoutForm() {
     };
   }, [formState?.success, formState?.data, dispatch, router, formState?.error]);
 
-  // const validateCartItems = () => {
-  //   const invalidItems = items.filter((item) => {
-  //     const needsSize = item.availableSizes && item.availableSizes.length > 0;
-  //     const needsColor = item.availableColors && item.availableColors.length > 0;
-  //     return (needsSize && !item.size) || (needsColor && !item.color);
-  //   });
-
-  //   if (invalidItems.length > 0) {
-  //     toast.error('Please select size and color for all items');
-  //     return false;
-  //   }
-  //   return true;
-  // };
-
-  // const handleSubmit = async (formData: FormData) => {
-  //   if (!validateCartItems()) {
-  //     return;
-  //   }
-  //   await createOrderAction(formData);
-  // };
-
   return (
     <Card>
       <CardHeader>
