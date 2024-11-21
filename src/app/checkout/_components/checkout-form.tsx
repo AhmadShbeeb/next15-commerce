@@ -43,7 +43,7 @@ export function CheckoutForm() {
   }, [formState?.success, formState?.data, dispatch, router, formState?.error]);
 
   return (
-    <Card>
+    <Card className="h-fit">
       <CardHeader>
         <CardTitle>Payment Details</CardTitle>
       </CardHeader>

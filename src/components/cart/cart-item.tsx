@@ -24,7 +24,7 @@ export function CartItem({ item }: CartItemProps) {
   return (
     <div className="flex items-center gap-4 rounded-lg border p-3">
       <div className="relative aspect-square h-20 w-20 overflow-hidden rounded-md">
-        <Image src={item.image || '/placeholder.jpg'} alt={item.name} fill className="object-cover" sizes="80px" />
+        <Image src={item.image || ''} alt={item.name} fill className="object-cover" sizes="80px" />
       </div>
       <div className="flex w-3/4 flex-col">
         <div className="flex items-center justify-between gap-3">

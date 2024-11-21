@@ -21,7 +21,7 @@ export function ProductCard({ product }: ProductCardProps) {
         productId: product.id,
         name: product.name,
         price: product.price,
-        image: product.images?.[0],
+        image: product.images?.[0]?.url || '',
         quantity: 1,
         maxQuantity: product.quantity,
         availableSizes: product.sizes,
@@ -34,7 +34,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-lg">
       <div className="relative aspect-video">
         <Image
-          src={product.images?.[0] || '/placeholder.jpg'}
+          src={product.images?.[0]?.url || ''}
           alt={product.name}
           fill
           className="object-cover"

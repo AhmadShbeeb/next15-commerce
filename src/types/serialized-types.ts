@@ -1,7 +1,7 @@
 import { Order, OrderItem, Prisma } from '@prisma/client';
 
 type ProductWithCategory = Prisma.ProductGetPayload<{
-  include: { category: true; colors: true; sizes: true };
+  include: { category: true; colors: true; sizes: true; images: true };
 }>;
 
 export type SerializedProduct = Omit<ProductWithCategory, 'price'> & {

@@ -12,8 +12,7 @@ export const productSchema = z.object({
   isFeatured: z.coerce.boolean(),
   images: z
     .string()
-    .url('Must be a valid URL')
-    .transform((url) => [url])
+    .transform((str) => (str ? str.split(',').filter(Boolean) : []))
     .optional(),
 });
 
@@ -28,7 +27,7 @@ export const validateProductForm = (formData: FormData) => {
     sizeIds: formData.get('sizeIds'),
     quantity: formData.get('quantity'),
     isFeatured: formData.get('isFeatured') === 'on',
-    // images: formData.get('images'),
+    images: formData.get('images'),
   });
 
   if (!parsedData.success) {

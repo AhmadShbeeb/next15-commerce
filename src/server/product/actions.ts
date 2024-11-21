@@ -13,7 +13,6 @@ export async function upsertProduct(previousState: unknown, formData: FormData) 
   try {
     await checkAuthorization();
     const { data: parsedFormData } = validateProductForm(formData);
-    console.log('🚀 ~ upsertProduct ~ parsedFormData:', parsedFormData);
 
     await prisma.product.upsert({
       where: {
@@ -25,7 +24,11 @@ export async function upsertProduct(previousState: unknown, formData: FormData) 
         price: parsedFormData.price,
         categoryId: parsedFormData.categoryId,
         quantity: parsedFormData.quantity,
-        // images: parsedFormData.images,
+        images: parsedFormData.images
+          ? {
+              create: parsedFormData.images.map((url) => ({ url })),
+            }
+          : undefined,
         isFeatured: parsedFormData.isFeatured,
         colors: parsedFormData.colorIds
           ? {
@@ -60,6 +63,10 @@ export async function upsertProduct(previousState: unknown, formData: FormData) 
                 connect: parsedFormData.sizeIds.map((sizeId) => ({ id: sizeId })),
               }
             : undefined),
+        },
+        images: {
+          deleteMany: {},
+          create: parsedFormData.images?.map((url) => ({ url })) || [],
         },
       },
     });

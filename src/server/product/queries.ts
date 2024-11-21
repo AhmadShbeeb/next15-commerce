@@ -53,6 +53,7 @@ export async function getProducts({
         category: true,
         colors: true,
         sizes: true,
+        images: true,
       },
     }),
     prisma.product.count({
@@ -81,6 +82,7 @@ export async function getProduct(id: string) {
       category: true,
       colors: true,
       sizes: true,
+      images: true,
     },
   });
 
@@ -115,6 +117,7 @@ export async function getFeaturedProducts() {
       category: true,
       colors: true,
       sizes: true,
+      images: true,
     },
     take: 10,
   });

@@ -18,6 +18,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { MultiSelectSearchable } from '@/components/multi-select-searchable';
 import { Switch } from '@/components/ui/switch';
+import { ImageUpload } from '@/components/image-upload';
+import { useState } from 'react';
+import Image from 'next/image';
+import { X } from 'lucide-react';
 
 interface ProductFormProps {
   product?: SerializedProduct;
@@ -30,7 +34,8 @@ export function ProductForm({ product }: ProductFormProps) {
   const { data: categories } = useGetCategories();
   const { data: colors } = useGetColors();
   const { data: sizes } = useGetSizes();
-  console.log('🚀 ~ ProductForm ~ sizes:', sizes);
+
+  const [images, setImages] = useState<string[]>(product?.images?.map((image) => image.url) || []);
 
   return (
     <form action={formAction} className="space-y-6">
@@ -144,16 +149,23 @@ export function ProductForm({ product }: ProductFormProps) {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="images">Image URL</Label>
-        <Input
-          id="images"
-          name="images"
-          type="url"
-          defaultValue={product?.images && product?.images.length > 0 ? product?.images[0] : ''}
-          className={cn({
-            'border-destructive': formState?.error?.images,
-          })}
-        />
+        <Label>Product Images</Label>
+        <ImageUpload onChange={setImages} />
+        <div className="grid grid-cols-3 gap-4">
+          {images.map((image) => (
+            <div key={image} className="relative">
+              <button
+                type="button"
+                className="absolute left-2 top-2 rounded-full bg-red-500 p-1 text-white hover:bg-red-700"
+                onClick={() => setImages(images.filter((img) => img !== image))}
+              >
+                <X className="size-4" />
+              </button>
+              <Image src={image} alt="product" width={250} height={250} className="object-cover" />
+            </div>
+          ))}
+        </div>
+        <input type="hidden" name="images" value={images.join(',')} />
         {formState?.error?.images && <p className="text-sm text-destructive">{formState.error.images.join(', ')}</p>}
       </div>
 

@@ -6,7 +6,8 @@ import { Select, SelectItem, SelectContent, SelectValue, SelectTrigger } from '@
 import { removeItem, updateItemOptions, updateQuantity } from '@/lib/store/features/cartSlice';
 import { useSelector } from '@/lib/store/store';
 import { Minus, Plus, Trash2 } from 'lucide-react';
-import { useRouter } from 'next/dist/client/router';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 
 export function OrderSummary() {
@@ -41,6 +42,9 @@ export function OrderSummary() {
           <div key={item.productId} className="flex items-center justify-between border-b pb-4">
             <div className="flex items-center gap-4">
               <div className="flex items-center">
+                {item?.image && (
+                  <Image src={item.image} alt={item.name} width={50} height={50} className="object-cover pr-2" />
+                )}
                 <span className="font-medium">{item.name}</span>
                 <div className="ml-4 flex items-center gap-2">
                   <Button

@@ -24,7 +24,6 @@ export async function Header() {
             <Button variant="ghost" asChild>
               <Link href="/products">Products</Link>
             </Button>
-            <CartSidebar />
             {session ? (
               <>
                 <Button variant="ghost" asChild>
@@ -35,12 +34,16 @@ export async function Header() {
                     <Link href="/admin/products">Admin</Link>
                   </Button>
                 )}
+                <CartSidebar />
                 <SignOutButton />
               </>
             ) : (
-              <Button variant="outline" asChild>
-                <Link href="/sign-in">Sign In</Link>
-              </Button>
+              <>
+                <CartSidebar />
+                <Button variant="outline" asChild>
+                  <Link href="/sign-in">Sign In</Link>
+                </Button>
+              </>
             )}
           </div>
         </div>
