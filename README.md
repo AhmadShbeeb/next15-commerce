@@ -1,8 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js E-commerce Platform
+
+A modern e-commerce platform built with Next.js 15, featuring a full-featured shopping experience and admin dashboard.
+
+## Features
+
+- 🛍️ Full e-commerce functionality
+- 🎨 Modern UI with Tailwind CSS and shadcn/ui
+- 🔐 Authentication with NextAuth.js
+- 🛢️ PostgreSQL database with Prisma ORM
+- 🔄 State management with Redux Toolkit
+- 🎯 React Query for server state management
+- 📱 Responsive design
+- ⚡ Server Components and Client Components
+- 🖼️ Image upload and management
+- 🎨 Theme customization
+- 📊 Admin dashboard
+
+## Tech Stack
+
+- **Framework:** Next.js 15
+- **Styling:** Tailwind CSS
+- **UI Components:** shadcn/ui
+- **Database:** PostgreSQL
+- **ORM:** Prisma
+- **Authentication:** NextAuth.js
+- **State Management:** Redux Toolkit
+- **Server State:** TanStack Query (React Query)
+- **Form Validation:** Zod
+- **Image Upload:** Uppy
+- **Carousel:** Embla Carousel
+
+## Prerequisites
+
+- Node.js 18+
+- PostgreSQL
+- npm or yarn or pnpm
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
 
 ```bash
 npm run dev
