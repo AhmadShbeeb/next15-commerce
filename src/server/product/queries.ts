@@ -24,8 +24,8 @@ export async function getProducts({
   maxPrice,
   page = 1,
   limit = 10,
-  orderBy = 'createdAt',
-  orderDirection = 'desc',
+  orderBy = 'name',
+  orderDirection = 'asc',
 }: GetProductsParams = {}) {
   const where = {
     ...(query && {
@@ -60,6 +60,8 @@ export async function getProducts({
       where,
     }),
   ]);
+
+  console.log('><><><<>>', orderBy, orderDirection);
 
   const serializedProducts = products.map((product) => ({
     ...product,
